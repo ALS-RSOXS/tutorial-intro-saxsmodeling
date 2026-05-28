@@ -1,0 +1,94 @@
+site_name: Simulating X-ray Scattering
+site_description: >-
+  A practical introduction to SAXS modeling using Python and GitHub,
+  designed for undergraduate students and early-career researchers.
+site_url: https://PLACEHOLDER.github.io/tutorial-intro-saxsmodeling
+repo_url: https://github.com/PLACEHOLDER/tutorial-intro-saxsmodeling
+repo_name: tutorial-intro-saxsmodeling
+edit_uri: edit/main/docs/
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: rsoxs
+  show_title: true
+  show_stargazers: false  # set to true once repo_url is finalized
+  topbar_sections: false
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - toc.follow
+
+extra:
+  als_group:
+    full_name: ALS RSOXS Group
+    acronym: RSOXS
+    github_url: https://github.com/PLACEHOLDER  # update before deploy
+    reixs_url: https://als.lbl.gov/science/photon-science-programs/rixs-program/
+
+plugins:
+  - rsoxs
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - javascripts/katex.js
+  - https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js
+  - https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js
+
+nav:
+  - Home: index.md
+  - "Section 1: Setup":
+    - Overview: section1-setup/index.md
+    - Why Python?: section1-setup/1-why-python.md
+    - Installing uv: section1-setup/2-installing-uv.md
+    - Virtual Environments: section1-setup/3-virtual-environments.md
+    - Git and GitHub: section1-setup/4-git-github.md
+    - SSH Keys: section1-setup/5-ssh-keys.md
+    - VS Code and Jupyter: section1-setup/6-vscode-jupyter.md
+    - Your First Commit: section1-setup/7-first-commit.md
+  - "Section 2: Sphere Model":
+    - Overview: section2-sphere/index.md
+    - What is SAXS?: section2-sphere/1-what-is-saxs.md
+    - Scattering Length Density: section2-sphere/2-scattering-length-density.md
+    - The Sphere Form Factor: section2-sphere/3-sphere-form-factor.md
+    - q-Vectors in NumPy: section2-sphere/4-q-vectors-numpy.md
+    - Plotting on a Log Scale: section2-sphere/5-plotting-loglog.md
+    - Effect of Sphere Size: section2-sphere/6-effect-of-size.md
+    - Polydispersity: section2-sphere/7-polydispersity.md
+    - Commit Checkpoint: section2-sphere/8-commit-checkpoint.md
+  - "Section 3: Shell Models":
+    - Overview: section3-shells/index.md
+    - Core-Shell Sphere: section3-shells/1-core-shell-model.md
+    - Multiple Shells: section3-shells/2-multiple-shells.md
+    - The Hollow Sphere: section3-shells/3-hollow-sphere.md
+    - Connection to Vesicles: section3-shells/4-vesicle-connection.md
+  - Appendix:
+    - Remote Computing via SSH: appendix/remote-ssh.md
+    - Exercise Solutions: appendix/exercise-solutions.md
