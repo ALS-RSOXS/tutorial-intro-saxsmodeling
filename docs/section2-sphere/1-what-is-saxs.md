@@ -3,8 +3,8 @@
 **Small-angle X-ray scattering** (SAXS) is a technique for measuring the structure of
 materials at length scales between roughly 1 and 100 nanometers — the scale of proteins,
 lipid vesicles, nanoparticles, and polymer chains. Rather than imaging a structure
-directly, SAXS measures how a beam of X-rays is deflected when it passes through a
-sample. The pattern of deflected intensities carries a fingerprint of the underlying
+directly, SAXS measures how a beam of X-rays is scattered when it passes through a
+sample. The pattern of scattered photos carries a fingerprint of the underlying
 structure, and our job is to decode it.
 
 ## The experiment
@@ -18,11 +18,12 @@ flowchart LR
     B -.->|"transmitted\nbeam"| C
 ```
 
-X-rays from the source pass through the sample. Most of them continue in a straight
+X-rays from the source pass, at the Advanced Light Source this is the synchrotron, through the sample. Most of them continue in a straight
 line (the transmitted beam, which is blocked by a beamstop). A small fraction are
-scattered — deflected at angles that depend on the size and arrangement of structures
+scattered and the scattering angle, with respect to the transmitted beam, depends on the size and arrangement of structures
 in the sample. The detector records the intensity of these scattered X-rays as a
-function of angle.
+function of angle. This measurement provides information on the entire ensemble of materials present in the path of the beam. 
+Compared to forms of microscopy which typically image tens-to-hundreds of objects, scattering provides insight into the structure of millions of particles.
 
 ## The scattering vector q
 
@@ -46,8 +47,9 @@ $\lambda$ is the wavelength of the X-rays.
 
 ## What we measure: I(q)
 
-The detector records the **scattering intensity** $I(q)$ — how much X-ray signal
-arrives at each value of $q$. Because samples are usually isotropic (the same in every
+Most scattering measurements use a 2-dimensional detector where each pixel is sensitive to the number of X-ray photons that hit it.
+Using a series of standards, the relative position of each pixel with respect to the sample can be determined which allows us to calculate the scattering angle subtended by each pixel which can then be converted into the $q$-vector. This provides a measure of the **scattering intensity** $I(q)$ — how much X-ray signal
+arrives at each pixelvalue of $q$. Because samples are usually isotropic (the same in every
 direction), the two-dimensional detector image is averaged into a one-dimensional
 $I(q)$ curve. This curve is what we compute, fit, and interpret.
 
@@ -75,8 +77,10 @@ volume. Structure factors for concentrated systems will be covered in a later se
     the conversion is $1 \text{ nm}^{-1} = 0.1 \text{ Å}^{-1}$. Mixing units is one
     of the most common sources of errors in scattering calculations, so always check
     which convention a paper is using before comparing numbers.
-
 ---
+Most BioSAXS experiments use **dilute** samples to remove the added complication of analyzing a structure-factor 
+when the morphology of a single particle is what is of interest. These solutions are typically fabricated with less than 10% weight by volume to be considered a dilute suspension.
+
 
 **What's next:** [Scattering Length Density](2-scattering-length-density.md) — the
 material property that determines how strongly a particle scatters X-rays.
