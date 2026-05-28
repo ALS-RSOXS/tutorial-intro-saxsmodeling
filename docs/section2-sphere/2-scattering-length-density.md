@@ -1,20 +1,19 @@
 # Scattering Length Density
 
-X-rays interact with the electrons in a material. A region that is dense with electrons
+Hard X-rays interact with the electrons in a material. A region that is dense with electrons
 scatters X-rays more strongly than a region that is sparse. The quantity that captures
 this is the **scattering length density** (SLD), given the symbol $\rho$ and measured
 in units of Å$^{-2}$.
 
-You do not need to know how to calculate SLD values from scratch — they are tabulated
-for common materials and can be computed from chemical composition using online tools.
+These values are typically calculated for common materials by adding up the number of atoms of each species within the molecule. 
+You will rarely need to calculate this value from scratch as they can be computed regularly using online tools.
 What matters for building models is understanding the role SLD plays.
 
 ## The two-phase model
 
 The simplest scattering model treats the sample as two regions with different SLDs: the
 **particle** (with SLD $\rho_1$) surrounded by a **matrix** or solvent (with SLD
-$\rho_2$). A sphere of lipid in water is one example. A polymer nanoparticle in a
-buffer solution is another.
+$\rho_2$). Examples would include a lipid nanoparticle in in water or proteins in a buffer solution.
 
 !!! note "Key Concept: Scattering Contrast"
     What determines the scattering signal is not the absolute SLD of either phase, but
@@ -37,7 +36,9 @@ buffer solution is another.
 
 These values give a sense of the typical magnitudes. The contrast between lipid chains
 and water is relatively small — this is why lipid scattering experiments require
-careful experimental design to maximize signal.
+careful experimental design to maximize signal. Certain experiments are designed to maximize and manipulate scattering contrast.
+The most common example is the use of a neutron scattering facility, where water can be easily replaced with deuterium (heavy water) to increase contrast. 
+An alternative solution is to use resonant X-rays which can generate scattering contrast through the use of a rapidly changing complex index of refraction, more on this later.
 
 ## Representing SLD in code
 
@@ -92,7 +93,7 @@ produces no scattering signal at all.
        of the solvent mixture.
 
 This idea — that you cannot see what you cannot distinguish from the background — will
-come back in Section 3 when we build hollow sphere models.
+come back in Section 3 when we build hollow sphere models which are appropriate to simulate vesicle scattering and model biological membranes.
 
 ## Complex SLD and the index of refraction
 
