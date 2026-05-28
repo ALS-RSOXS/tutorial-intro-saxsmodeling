@@ -102,6 +102,12 @@ docs/
 │   ├── 2-multiple-shells.md       ✅
 │   ├── 3-hollow-sphere.md         ✅
 │   └── 4-vesicle-connection.md    ✅
+├── section4-gaussian/
+│   ├── index.md                   ⬜
+│   ├── 1-why-gaussian.md          ⬜
+│   ├── 2-building-the-profile.md  ⬜
+│   ├── 3-form-factor-from-profile.md  ⬜
+│   └── 4-comparing-to-shell-model.md  ⬜
 └── appendix/
     ├── remote-ssh.md              ✅
     └── exercise-solutions.md      ✅  (stub — solutions are in-page)
@@ -238,6 +244,160 @@ q = np.logspace(-3, 0, 500)  # (1)
 | Section 1 | `chapter_01_hello.ipynb` |
 | Section 2 | `chapter_02_sphere.ipynb` |
 | Section 3 | `chapter_03_shells.ipynb` |
+
+---
+
+### Section 4: Gaussian Bilayer Profiles ⬜ Not yet written
+
+**Goal:** Introduce the Gaussian electron density profile as a physically motivated
+alternative to the sharp-interface shell model. By the end of this section the student
+can construct a continuous radial electron density profile for a lipid bilayer,
+numerically compute its form factor, and critically compare it to the three-shell
+model from Section 3. The student notebook for this section is
+`chapter_04_gaussian_bilayer.ipynb`.
+
+#### Motivation: why Gaussian profiles?
+
+The three-shell model of a bilayer (headgroup / chains / headgroup) assumes perfectly
+sharp interfaces — the electron density jumps instantly from one value to the next at
+each boundary. This is an approximation. In a real membrane:
+
+- **Thermal fluctuations** cause individual lipid molecules to move in and out of
+  registry, blurring the interface over ~5–10 Å
+- **The headgroup–water interface** is chemically diffuse: water penetrates into the
+  headgroup region and the boundary is a gradient, not a step
+- **Undulations** of the whole bilayer surface add further apparent broadening when
+  averaged over the illuminated volume
+
+The Gaussian model captures this physical reality by representing each structural
+region — headgroups and hydrocarbon chains — as a Gaussian function of the radial
+coordinate rather than a rectangular slab. This approach:
+
+- Reproduces experimental data more faithfully at higher $q$ where oscillations are
+  sensitive to interface sharpness
+- Reduces the number of parameters compared to adding more sharp shells to approximate
+  a smooth profile
+- Is directly comparable to results from X-ray reflectometry and molecular dynamics
+  simulations, where the electron density profile is the primary output
+- Has an established literature precedent — it is the model used by Brzustowicz &
+  Brunger (2005) and forms the basis of widely used analysis software
+
+#### Page structure
+
+| Page | Status | Key content |
+|---|---|---|
+| `1-why-gaussian.md` | ⬜ | Sharp vs smooth interfaces, physical motivation, literature context, preview of what the Gaussian model can and cannot do |
+| `2-building-the-profile.md` | ⬜ | The 1D symmetric bilayer electron density profile as a sum of three Gaussians (two headgroup peaks + one methyl trough), parameter definitions, Python implementation of `bilayer_profile(r, ...)`, visualization |
+| `3-form-factor-from-profile.md` | ⬜ | Numerical spherical Fourier transform, `vesicle_form_factor_gaussian(q, R, ...)` function, plot the resulting curve |
+| `4-comparing-to-shell-model.md` | ⬜ | Side-by-side comparison with three-shell model from Section 3, exercise: tune Gaussian widths to converge toward the sharp-interface limit, discuss where the models agree and where they diverge, when each is appropriate |
+
+#### Content detail
+
+**Page 1 — Why Gaussian profiles?**
+
+- Open with a physical picture: a bilayer is not a stack of uniform slabs, it is a
+  continuously varying electron density profile
+- Show a schematic of the headgroup-chain-headgroup structure with smooth transitions
+- Explain the three regimes where the step model breaks down:
+  (a) high-$q$ oscillation amplitude over-predicted by sharp interfaces,
+  (b) fitting real data where interface roughness is a free parameter,
+  (c) comparing to MD simulations which output continuous profiles
+- Brief mention of published Gaussian bilayer models and why they are standard in the
+  field (Brzustowicz & Brunger 2005, Pabst et al.)
+- Note that the Gaussian model still uses the same amplitude-before-squaring rule
+
+**Page 2 — Building the electron density profile**
+
+The symmetric bilayer model uses three Gaussian components:
+
+$$\rho(r) = \rho_w + A_H \left[\exp\!\left(-\frac{(r - r_H^{\text{out}})^2}{2\sigma_H^2}\right) + \exp\!\left(-\frac{(r - r_H^{\text{in}})^2}{2\sigma_H^2}\right)\right] - A_C\,\exp\!\left(-\frac{(r - r_C)^2}{2\sigma_C^2}\right)$$
+
+where:
+- $\rho_w$ is the water (background) SLD
+- $A_H$, $\sigma_H$ — headgroup Gaussian amplitude and width
+- $r_H^{\text{out}} = R$, $r_H^{\text{in}} = R - d_{HH}$ — outer and inner headgroup positions
+  (where $R$ is the outer vesicle radius and $d_{HH}$ is the headgroup-to-headgroup
+  distance across the bilayer)
+- $A_C$, $\sigma_C$ — methyl chain amplitude (negative relative to $\rho_w$) and width
+- $r_C = R - d_{HH}/2$ — midplane of the bilayer
+
+Typical starting parameters for a DPPC bilayer:
+$d_{HH} \approx 37$ Å, $\sigma_H \approx 3$ Å, $\sigma_C \approx 5$ Å
+
+Python: implement `bilayer_electron_density(r, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water)`.
+Plot $\rho(r)$ vs $r$ and label each feature. Overlay the step-function profile from
+the three-shell model for comparison.
+
+**Page 3 — From profile to form factor**
+
+The form factor amplitude for a spherically symmetric particle with electron density
+profile $\rho(r)$ is:
+
+$$F(q) = \frac{4\pi}{q} \int_0^\infty \left[\rho(r) - \rho_w\right] r \sin(qr)\, \mathrm{d}r$$
+
+This integral does not have a closed form for a sum of Gaussians on a sphere, so we
+evaluate it numerically using `np.trapz`:
+
+```python
+def vesicle_form_factor_gaussian(q, R, d_HH, sigma_H, A_H, sigma_C, A_C,
+                                  rho_water, n_points=2000):
+    r = np.linspace(0.1, R + 4 * sigma_H, n_points)
+    rho = bilayer_electron_density(r, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water)
+    delta_rho = rho - rho_water
+
+    F = np.array([
+        np.trapz(delta_rho * r * np.sin(qi * r), r) * 4 * np.pi / qi
+        for qi in q
+    ])
+
+    return (F / F[0])**2   # normalized P(q)
+```
+
+Discuss the resolution of the radial grid: too coarse misses the narrow Gaussians;
+too fine is slow. `n_points=2000` is a reasonable default for typical bilayer
+dimensions. Code annotation on the `for` loop explains what each step computes.
+
+**Page 4 — Comparing to the shell model**
+
+Main exercise: generate both the Gaussian form factor and the three-shell form factor
+for the same nominal bilayer geometry, overlay them on log-log axes, and observe where
+they agree and diverge.
+
+Expected result: at small to intermediate $q$ (below the first minimum of the main
+peak) the two models agree closely. At larger $q$, the sharp-interface shell model
+predicts deeper oscillations than the Gaussian model because the Gaussian dampens
+high-frequency contributions exponentially (the $\exp(-q^2\sigma^2/2)$ envelope).
+
+Exercises:
+1. Start with narrow Gaussians ($\sigma_H = 1$ Å, $\sigma_C = 1$ Å) — the profile
+   approaches a step function. Confirm that the Gaussian and shell model curves
+   converge.
+2. Broaden the Gaussians progressively. At what width does the high-$q$ behavior
+   diverge meaningfully?
+3. The headgroup amplitude $A_H$ is positive (higher electron density than water) and
+   the chain amplitude $A_C$ is negative (lower electron density). What happens to
+   the profile and form factor if you increase $A_H$ while holding $A_C$ fixed?
+4. **Conceptual:** If you were fitting experimental data from a real vesicle suspension
+   and could only see up to $q = 0.3$ Å$^{-1}$, would the three-shell model be
+   sufficient? What about $q = 0.6$ Å$^{-1}$?
+
+#### Functions to build in Section 4
+
+| Function | Signature |
+|---|---|
+| `bilayer_electron_density` | `(r, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water)` |
+| `vesicle_form_factor_gaussian` | `(q, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water, n_points=2000)` |
+
+#### mkdocs.yml nav additions (when written)
+
+```yaml
+- "Section 4: Gaussian Bilayer Profiles":
+  - Overview: section4-gaussian/index.md
+  - Why Gaussian Profiles?: section4-gaussian/1-why-gaussian.md
+  - Building the Profile: section4-gaussian/2-building-the-profile.md
+  - Form Factor from a Profile: section4-gaussian/3-form-factor-from-profile.md
+  - Comparing to the Shell Model: section4-gaussian/4-comparing-to-shell-model.md
+```
 
 ---
 
