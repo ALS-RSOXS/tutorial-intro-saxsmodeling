@@ -7,7 +7,8 @@
 .codehilite,
 .highlight {
     position: relative;
-    overflow: visible !important;
+    max-height: none !important; /* remove any theme-imposed fixed height */
+    overflow: hidden;             /* contain the pre box — pre scrolls internally */
 }
 
 .codehilite pre,
@@ -16,6 +17,7 @@
     overflow-y: auto;
     overflow-x: auto;
     white-space: pre;
+    margin: 0;
 }
 
 /* ---------------------------------------------------------------
