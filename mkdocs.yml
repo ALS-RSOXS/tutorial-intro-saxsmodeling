@@ -81,19 +81,24 @@ nav:
     - Effect of Sphere Size: section2-sphere/6-effect-of-size.md
     - Polydispersity: section2-sphere/7-polydispersity.md
     - Commit Checkpoint: section2-sphere/8-commit-checkpoint.md
-  - "Section 3: Shell Models":
-    - Overview: section3-shells/index.md
-    - Core-Shell Sphere: section3-shells/1-core-shell-model.md
-    - Multiple Shells: section3-shells/2-multiple-shells.md
-    - The Hollow Sphere: section3-shells/3-hollow-sphere.md
-    - Connection to Vesicles: section3-shells/4-vesicle-connection.md
-  - "Section 4: Gaussian Bilayer Profiles":
-    - Overview: section4-gaussian/index.md
-    - Why Gaussian Profiles?: section4-gaussian/1-why-gaussian.md
-    - Building the Profile: section4-gaussian/2-building-the-profile.md
-    - Form Factor from a Profile: section4-gaussian/3-form-factor-from-profile.md
-    - Comparing to the Shell Model: section4-gaussian/4-comparing-to-shell-model.md
-    - Asymmetric Bilayer: section4-gaussian/5-asymmetric-bilayer.md
+  - "Section 3: Fitting Data":
+    - Overview: section3-fitting/index.md
+    - Chi-Squared and Fitting a Line: section3-fitting/1-chi-squared.md
+    - Interpreting the Results: section3-fitting/2-interpreting-results.md
+    - Fitting Scattering Data: section3-fitting/3-fitting-saxs.md
+  - "Section 4: Shell Models":
+    - Overview: section4-shells/index.md
+    - Core-Shell Sphere: section4-shells/1-core-shell-model.md
+    - Multiple Shells: section4-shells/2-multiple-shells.md
+    - The Hollow Sphere: section4-shells/3-hollow-sphere.md
+    - Connection to Vesicles: section4-shells/4-vesicle-connection.md
+  - "Section 5: Gaussian Bilayer Profiles":
+    - Overview: section5-gaussian/index.md
+    - Why Gaussian Profiles?: section5-gaussian/1-why-gaussian.md
+    - Building the Profile: section5-gaussian/2-building-the-profile.md
+    - Form Factor from a Profile: section5-gaussian/3-form-factor-from-profile.md
+    - Comparing to the Shell Model: section5-gaussian/4-comparing-to-shell-model.md
+    - Asymmetric Bilayer: section5-gaussian/5-asymmetric-bilayer.md
   - Appendix:
     - Remote Computing via SSH: appendix/remote-ssh.md
     - Exercise Solutions: appendix/exercise-solutions.md

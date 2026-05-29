@@ -1,7 +1,7 @@
 # Form Factor from a Profile
 
 With a continuous electron density profile in hand, the next step is to compute the
-scattering form factor. For the shell models in Section 3 we had a closed-form
+scattering form factor. For the shell models in Section 4 we had a closed-form
 analytical result. The Gaussian bilayer profile does not have a simple closed form for
 a spherical geometry, so we evaluate the form factor **numerically**.
 
@@ -112,7 +112,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The curve should show the characteristic hollow-sphere shape from Section 3 — a
+The curve should show the characteristic hollow-sphere shape from Section 4 — a
 prominent peak followed by oscillations — but with smoother, more damped oscillations
 at high $q$ compared to a sharp-interface model.
 

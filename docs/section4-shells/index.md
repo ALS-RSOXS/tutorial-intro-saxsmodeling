@@ -1,4 +1,4 @@
-# Section 3: Adding Shells to the Model
+# Section 4: Adding Shells to the Model
 
 The solid sphere is the simplest possible scattering object, but real materials are
 rarely uniform. A polymer nanoparticle may have a dense core and a swollen outer layer.
@@ -17,7 +17,7 @@ By the end of this section you will have:
 - Physical intuition for how each shell changes the scattering curve
 - An understanding of why the hollow sphere model is a good first description of a
   vesicle
-- A complete, reusable scattering toolkit built across Sections 2 and 3
+- A complete, reusable scattering toolkit built across Sections 2 and 4
 
 All code belongs in a new notebook: `chapter_03_shells.ipynb`. Copy your
 `sphere_amplitude`, `sphere_form_factor`, and `plot_form_factor` functions from

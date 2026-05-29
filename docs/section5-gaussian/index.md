@@ -1,6 +1,6 @@
-# Section 4: Gaussian Bilayer Profiles
+# Section 5: Gaussian Bilayer Profiles
 
-The shell models in Section 3 represent the bilayer as a stack of uniform slabs with
+The shell models in Section 4 represent the bilayer as a stack of uniform slabs with
 perfectly sharp boundaries. That is a useful first approximation, but it does not
 reflect how a real membrane is structured. Lipid molecules fluctuate thermally, water
 penetrates into the headgroup region, and the interfaces between structural regions are

@@ -81,7 +81,7 @@ The Gaussian model is still a model. It assumes:
 - The bilayer electron density profile is well described by three Gaussians (adequate
   for most common phospholipids, but not for all lipid mixtures)
 - The vesicle is monodisperse (polydispersity must be handled separately)
-- The bilayer is symmetric between leaflets (relaxed in Section 4 page 5)
+- The bilayer is symmetric between leaflets (relaxed in Section 5 page 5)
 
 It does not account for inter-vesicle interactions (structure factor), multilamellarity,
 or cholesterol-induced changes to chain order that alter the profile shape.

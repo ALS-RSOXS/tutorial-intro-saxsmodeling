@@ -1,7 +1,7 @@
 # Comparing to the Shell Model
 
 You now have two ways to compute the scattering form factor of a lipid vesicle: the
-three-shell model from Section 3 and the Gaussian profile model from this section.
+three-shell model from Section 4 and the Gaussian profile model from this section.
 This page puts them side by side and examines when they agree, when they diverge, and
 what that means for interpreting experimental data.
 

@@ -22,7 +22,9 @@ Each section builds on the last:
 |---|---|---|
 | **1** | Setup | A working Python environment, a GitHub repository, and your first interactive notebook |
 | **2** | Sphere model | A function that computes and plots the X-ray scattering from a sphere of any size, including polydisperse samples |
-| **3** | Shell models | Core-shell and hollow sphere models that connect directly to the physics of lipid vesicles |
+| **3** | Fitting data | Least-squares fitting with `scipy.optimize.curve_fit`, confidence bands, correlation matrices, and fitting a sphere model to noisy scattering data |
+| **4** | Shell models | Core-shell and hollow sphere models that connect directly to the physics of lipid vesicles |
+| **5** | Gaussian bilayer profiles | Continuous electron density profiles for symmetric and asymmetric POPC bilayers |
 
 By the end of Section 3 you will be able to generate and interpret scattering curves
 for structures that appear in real experimental soft-matter research.

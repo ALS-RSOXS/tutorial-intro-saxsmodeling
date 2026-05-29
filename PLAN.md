@@ -6,9 +6,9 @@ This document describes the structure, formatting conventions, and content appro
 building the SAXS modeling tutorial as an MkDocs website hosted on GitHub Pages using
 the `mkdocs-rsoxs` theme. It also tracks what has been built and what remains.
 
-**Repository:** `tutorial-intro-saxsmodeling`  
-**Theme:** `mkdocs-rsoxs` (local, `../mkdocs-rsoxs`)  
-**Site configuration:** `mkdocs.yml` is drafted — `site_url` and `repo_url` need final values
+**Repository:** `ALS-RSOXS/tutorial-intro-saxsmodeling`  
+**Theme:** `mkdocs-rsoxs` (installed from PyPI via `pyproject.toml`)  
+**Site:** Deployed to `https://als-rsoxs.github.io/tutorial-intro-saxsmodeling/` via GitHub Actions (`docs.yml`)
 
 ---
 
@@ -50,23 +50,25 @@ be bolded on first use and explained in plain language before or immediately aft
 
 | File | Status | Notes |
 |---|---|---|
-| `mkdocs.yml` | ✅ Written | `site_url`, `repo_url`, `github_url` have `PLACEHOLDER` values — update before deploy |
-| `docs/index.md` | ✅ Written | Landing page with section overview table |
-| `docs/javascripts/katex.js` | ✅ Written | KaTeX auto-render initialization for `pymdownx.arithmatex` |
-| **Section 1** (all 7 pages + appendix) | ✅ Written | See detail below |
-| **Section 2** (all 8 pages) | ✅ Written | See detail below |
-| **Section 3** (all 4 pages) | ✅ Written | See detail below |
-| `docs/appendix/exercise-solutions.md` | ✅ Written | Stub — directs readers to in-page collapsible solutions |
+| `mkdocs.yml` | ✅ | Finalized with `ALS-RSOXS` URLs; `show_stargazers: true` |
+| `pyproject.toml` | ✅ | `mkdocs`, `mkdocs-rsoxs`, `pymdown-extensions`, `mkdocstrings-python` as project dependencies; `requires-python = ">=3.13"` |
+| `uv.lock` | ✅ | Committed for reproducible CI builds |
+| `Makefile` | ✅ | `make install`, `make docs`, `make docs-serve`, `make clean` |
+| `.github/workflows/docs.yml` | ✅ | Builds with `uv sync` + `mkdocs build`, deploys via `actions/deploy-pages` |
+| `docs/index.md` | ✅ | Landing page with section overview table |
+| `docs/javascripts/katex.js` | ✅ | KaTeX auto-render initialization |
+| **Section 1** (7 pages + appendix) | ✅ | See detail below |
+| **Section 2** (8 pages) | ✅ | See detail below |
+| **Section 3** (4 pages) | ✅ | See detail below |
+| **Section 4** (5 pages + index) | ✅ | See detail below |
+| `docs/appendix/exercise-solutions.md` | ✅ | Stub — directs readers to in-page collapsible solutions |
 
 ### Pending
 
 | Item | Notes |
 |---|---|
-| `site_url` / `repo_url` in `mkdocs.yml` | Needs GitHub org/username — fill in `PLACEHOLDER` |
-| GitHub Pages deployment | Enable in repository settings; add GitHub Actions workflow |
-| `pyproject.toml` for tutorial site | Add `mkdocs` and `mkdocs-rsoxs` as dependencies |
-| GitHub Actions workflow | Copy from `mkdocs-rsoxs/.github/` and adapt |
 | Landing page "destination image" | A vesicle scattering curve figure on `docs/index.md` would motivate the reader |
+| Python code block CSS styling | Theme CSS to be updated in `mkdocs-rsoxs` separately; console blocks already use `console` language tag with `$` prefix |
 
 ---
 
@@ -103,12 +105,12 @@ docs/
 │   ├── 3-hollow-sphere.md         ✅
 │   └── 4-vesicle-connection.md    ✅
 ├── section4-gaussian/
-│   ├── index.md                       ⬜
-│   ├── 1-why-gaussian.md              ⬜
-│   ├── 2-building-the-profile.md      ⬜
-│   ├── 3-form-factor-from-profile.md  ⬜
-│   ├── 4-comparing-to-shell-model.md  ⬜
-│   └── 5-asymmetric-bilayer.md        ⬜
+│   ├── index.md                       ✅
+│   ├── 1-why-gaussian.md              ✅
+│   ├── 2-building-the-profile.md      ✅
+│   ├── 3-form-factor-from-profile.md  ✅
+│   ├── 4-comparing-to-shell-model.md  ✅
+│   └── 5-asymmetric-bilayer.md        ✅
 └── appendix/
     ├── remote-ssh.md              ✅
     └── exercise-solutions.md      ✅  (stub — solutions are in-page)
@@ -192,6 +194,34 @@ Student notebook: `chapter_03_shells.ipynb`
 
 ---
 
+### Section 4: Gaussian Bilayer Profiles ✅
+
+**Goal:** Replace the sharp-interface shell model with a continuous Gaussian electron
+density profile. Build a symmetric POPC bilayer model, compute its form factor
+numerically via spherical Fourier transform, compare to the shell model, and extend
+to an asymmetric bilayer with independent leaflet parameters.
+
+**Reference lipid:** POPC at 25°C ($d_{HH} = 37.1$ Å, $\sigma_H = 3.0$ Å,
+$\sigma_C = 5.5$ Å)
+
+Student notebook: `chapter_04_gaussian_bilayer.ipynb`
+
+| Page | Key content | Notable elements |
+|---|---|---|
+| `1-why-gaussian.md` | Three physical causes of smooth interfaces (thermal fluctuations, water penetration, undulations), three failure modes of shell model, literature context (Brzustowicz & Brunger 2005, Kučerka 2011) | No code — conceptual foundation |
+| `2-building-the-profile.md` | Symmetric three-Gaussian formula, POPC parameter table, `bilayer_electron_density` function, full profile plot plus component-by-component visualization, exercises on broadening each term | Code annotations, exercise with collapsible solution |
+| `3-form-factor-from-profile.md` | Spherical Fourier transform integral, `vesicle_form_factor_gaussian` with `np.trapz` loop, analytical $F(0)$ normalization, radial grid resolution discussion | Info callout on grid resolution, timing exercise |
+| `4-comparing-to-shell-model.md` | Side-by-side overlay for same POPC geometry, convergence as $\sigma \to 0$, divergence above $q \approx 0.4$ Å$^{-1}$, conceptual exercise on required $q_{\max}$ for each model | Two overlay plots, four exercises |
+| `5-asymmetric-bilayer.md` | Curvature argument (outer leaflet 28% more area), Brzustowicz & Brunger structural disorder finding, `asymmetric_bilayer_electron_density` and `asymmetric_vesicle_form_factor`, symmetric vs asymmetric profile comparison, exercises on detecting asymmetry from data quality | Two functions, concept box, exercises on SNR requirements |
+
+**Functions built in Section 4:**
+- `bilayer_electron_density(r, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water)`
+- `vesicle_form_factor_gaussian(q, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water, n_points=2000)`
+- `asymmetric_bilayer_electron_density(r, R, d_HH, sigma_H_out, A_H_out, sigma_H_in, A_H_in, sigma_C, A_C, rho_water)`
+- `asymmetric_vesicle_form_factor(q, R, d_HH, sigma_H_out, A_H_out, sigma_H_in, A_H_in, sigma_C, A_C, rho_water, n_points=2000)`
+
+---
+
 ## Formatting Conventions
 
 ### Admonition boxes
@@ -246,6 +276,11 @@ q = np.logspace(-3, 0, 500)  # (1)
 | Section 2 | `chapter_02_sphere.ipynb` |
 | Section 3 | `chapter_03_shells.ipynb` |
 | Section 4 | `chapter_04_gaussian_bilayer.ipynb` |
+
+**Additional formatting applied across all sections:**
+- All shell/terminal command blocks use `console` language tag with `$` prefix on command lines
+- Git checkpoint `!!! tip` boxes added to all pages that introduce new code
+- Suggested commit messages provided at each checkpoint
 
 ---
 
@@ -454,26 +489,31 @@ Python: implement `asymmetric_bilayer_electron_density(r, R, d_HH, sigma_H_out, 
 
 ## Build and Deployment
 
-When ready to deploy:
+The site is live and deploying automatically. Configuration is complete.
 
-1. Fill in `PLACEHOLDER` values in `mkdocs.yml`:
-   - `site_url`
-   - `repo_url`
-   - `extra.als_group.github_url`
-   - Set `show_stargazers: true`
+### Local development
 
-2. Add a `pyproject.toml` for the tutorial site with `mkdocs` and the local
-   `mkdocs-rsoxs` theme as dependencies:
-   ```toml
-   [tool.uv.sources]
-   mkdocs-rsoxs = { path = "../mkdocs-rsoxs", editable = true }
-   ```
+```console
+$ make install    # uv sync — installs all dependencies
+$ make docs-serve # uv run mkdocs serve — live preview at http://localhost:8000
+$ make docs       # uv run mkdocs build — builds static site into site/
+$ make clean      # removes site/ directory
+```
 
-3. Enable GitHub Pages in the repository settings (source: `gh-pages` branch).
+### CI/CD
 
-4. Add a GitHub Actions workflow — copy from `mkdocs-rsoxs/.github/` and adapt the
-   `mkdocs build` step.
+Every push to `main` triggers `.github/workflows/docs.yml`:
+1. Checks out repo with `fetch-depth: 0` (required by gitpython in theme)
+2. Installs uv and Python 3.13
+3. Runs `uv sync` (reads `uv.lock` for reproducibility; cached by `setup-uv`)
+4. Runs `uv run mkdocs build`
+5. Uploads `site/` as a Pages artifact and deploys via `actions/deploy-pages`
 
-5. Verify KaTeX math renders correctly. If not, check whether the `mkdocs-rsoxs` theme
-   handles `arithmatex` spans internally or whether the CDN entries in `extra_javascript`
-   conflict with the theme's own KaTeX loading.
+### Known open items
+
+- **Landing page figure** — `docs/index.md` would benefit from a vesicle scattering
+  curve image to motivate the reader before they begin
+- **Python code block styling** — `console` blocks are visually distinct from
+  `python` blocks via the theme's Pygments highlighting; further CSS differentiation
+  (e.g. dark terminal background for console) is planned as a theme update in
+  `mkdocs-rsoxs`

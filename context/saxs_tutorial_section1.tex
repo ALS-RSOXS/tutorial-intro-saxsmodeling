@@ -1,0 +1,991 @@
+% ============================================================
+%  X-ray Scattering Simulations: A Practical Introduction
+%  A tutorial guide for undergraduate and early PhD students
+% ============================================================
+
+\documentclass[nobib]{tufte-book}
+
+% ---- Core packages ----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% ---- Code listings ----
+\usepackage{listings}
+\usepackage{xcolor}
+
+% ---- Callout / info boxes ----
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% ---- Hyperlinks ----
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue!70!black,
+    citecolor=black
+}
+
+% =============================================================
+%  Color definitions
+% =============================================================
+\definecolor{codebackground}{RGB}{248,248,248}
+\definecolor{codekeyword}{RGB}{0,0,180}
+\definecolor{codestring}{RGB}{0,128,0}
+\definecolor{codecomment}{RGB}{128,128,128}
+\definecolor{calloutblue}{RGB}{220,235,252}
+\definecolor{calloutblueborder}{RGB}{70,130,200}
+\definecolor{calloutyellow}{RGB}{255,249,219}
+\definecolor{calloutyellowborder}{RGB}{200,170,0}
+\definecolor{calloutgreen}{RGB}{220,248,220}
+\definecolor{calloutgreenborder}{RGB}{60,160,60}
+\definecolor{calloutred}{RGB}{252,228,228}
+\definecolor{calloutredborder}{RGB}{180,60,60}
+
+% =============================================================
+%  Code listing style
+% =============================================================
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    backgroundcolor=\color{codebackground},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{codekeyword}\bfseries,
+    stringstyle=\color{codestring},
+    commentstyle=\color{codecomment}\itshape,
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    framerule=0.4pt,
+    rulecolor=\color{gray!40},
+    xleftmargin=16pt,
+    framexleftmargin=16pt,
+    tabsize=4,
+    captionpos=b,
+}
+
+\lstdefinestyle{bashstyle}{
+    language=bash,
+    backgroundcolor=\color{codebackground},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{codekeyword}\bfseries,
+    commentstyle=\color{codecomment}\itshape,
+    numberstyle=\tiny\color{gray},
+    numbers=none,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    framerule=0.4pt,
+    rulecolor=\color{gray!40},
+    xleftmargin=16pt,
+    framexleftmargin=16pt,
+    tabsize=4,
+}
+
+\lstset{style=pythonstyle}
+
+% =============================================================
+%  Custom tcolorbox environments
+% =============================================================
+
+% Key concept box (blue)
+\newtcolorbox{conceptbox}[1][]{
+    enhanced,
+    breakable,
+    colback=calloutblue,
+    colframe=calloutblueborder,
+    fonttitle=\bfseries\small,
+    title={Key Concept},
+    #1
+}
+
+% Note / aside box (yellow)
+\newtcolorbox{notebox}[1][]{
+    enhanced,
+    breakable,
+    colback=calloutyellow,
+    colframe=calloutyellowborder,
+    fonttitle=\bfseries\small,
+    title={Note},
+    #1
+}
+
+% Try it yourself box (green)
+\newtcolorbox{exercisebox}[1][]{
+    enhanced,
+    breakable,
+    colback=calloutgreen,
+    colframe=calloutgreenborder,
+    fonttitle=\bfseries\small,
+    title={Try It Yourself},
+    #1
+}
+
+% Warning box (red)
+\newtcolorbox{warningbox}[1][]{
+    enhanced,
+    breakable,
+    colback=calloutred,
+    colframe=calloutredborder,
+    fonttitle=\bfseries\small,
+    title={Watch Out},
+    #1
+}
+
+% =============================================================
+%  Title
+% =============================================================
+\title{Simulating X-ray Scattering:\\[6pt]
+       A Practical Introduction\\[6pt]
+       Using Python and GitHub}
+\author{}
+\date{}
+
+% =============================================================
+\begin{document}
+% =============================================================
+
+\maketitle
+\tableofcontents
+
+% ============================================================
+%  PREFACE
+% ============================================================
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+These notes are intended for undergraduate students and researchers early in
+their graduate careers who want to build practical computational skills while
+exploring the physics of X-ray scattering from soft-matter systems.
+The goal is deliberately modest: by the end of this guide you will be able
+to write clean, well-documented Python code that simulates how X-rays scatter
+from simple geometric objects---starting with a solid sphere and ending with a
+multi-shell hollow vesicle that captures the essential physics of a lipid
+bilayer membrane.
+Along the way you will also learn how to manage software environments, track
+your work with version control, and produce publication-quality figures.
+
+No prior experience with scattering theory is assumed.
+A working knowledge of algebra and basic calculus will be helpful, as will some
+familiarity with programming in any language, though complete beginners to Python
+are welcome.
+Each section of this guide builds directly on the previous one, and it is
+strongly recommended that you work through them in order.
+
+The exercises at the end of each chapter are an essential part of the learning
+process.
+Full worked solutions are collected in Appendix~\ref{app:solutions}, but you
+are strongly encouraged to attempt each problem before consulting them.
+
+\bigskip
+\noindent\textit{A note on software versions:}
+This guide was written using Python~3.12 and \texttt{uv}~0.4.
+The commands shown should work without modification on macOS, Linux, and
+Windows (via PowerShell or WSL2), but minor differences may appear.
+Where platform-specific notes are needed they are marked clearly.
+
+% ============================================================
+%  PART ONE
+% ============================================================
+\part{Setting Up Your Scientific Computing Environment}
+
+% ------------------------------------------------------------
+\chapter{Python and Package Management with \texttt{uv}}
+\label{ch:python}
+% ------------------------------------------------------------
+
+\section{Why Python?}
+
+Python has become the dominant language for scientific computing over the past
+decade, and for good reason.
+It is free and open-source, runs on every major operating system, and has an
+enormous ecosystem of libraries purpose-built for numerical work, data
+visualisation, and statistical analysis.
+For our purposes the most important of these are:
+
+\begin{itemize}
+    \item \textbf{NumPy} --- fast numerical arrays and mathematical functions
+    \item \textbf{SciPy} --- scientific algorithms including special functions
+          and optimisation routines
+    \item \textbf{Matplotlib} --- publication-quality plotting
+    \item \textbf{JupyterLab} --- an interactive notebook interface that runs
+          in your browser or directly inside VS Code
+\end{itemize}
+
+Python is also designed to be readable.
+The goal of this guide is for you to understand every line of code you write,
+not just copy it.
+Keeping code readable---with clear variable names and short explanatory
+comments---is a habit worth building from the very first session.
+
+% ------------------------------------------------------------
+\section{What is \texttt{uv} and Why Use It?}
+% ------------------------------------------------------------
+
+When you install Python, you get the language itself but not the scientific
+libraries listed above.
+Those must be installed separately, and managing them can become complicated
+quickly: different projects may need different versions of the same library,
+and installing everything into a single global environment is a reliable way
+to create hard-to-diagnose conflicts.
+
+\texttt{uv} is a modern Python package and project manager that solves this
+cleanly.\sidenote{%
+    \texttt{uv} is developed by Astral and is written in Rust, which makes it
+    significantly faster than older tools like \texttt{pip} and
+    \texttt{conda}.
+    Full documentation is available at
+    \url{https://docs.astral.sh/uv/}.}
+It handles three things for you automatically:
+
+\begin{enumerate}
+    \item Installing and managing Python itself
+    \item Creating isolated \emph{virtual environments} for each project
+    \item Installing and tracking the exact versions of every package your
+          project depends on
+\end{enumerate}
+
+The concept of a virtual environment deserves a moment of attention before
+we continue.
+
+\begin{conceptbox}[title={What is a Virtual Environment?}]
+A virtual environment is an isolated copy of Python and its installed packages
+that belongs to one specific project.
+Think of it like a clean laboratory bench: everything on that bench is exactly
+what that experiment needs, and nothing from a different experiment can
+interfere with it.
+
+When you work inside a virtual environment, installing or upgrading a package
+affects only that project---not anything else on your computer.
+This makes your work reproducible: a collaborator can recreate your exact
+environment from a single configuration file and run your code without
+modification.
+\end{conceptbox}
+
+% ------------------------------------------------------------
+\section{Installing \texttt{uv}}
+% ------------------------------------------------------------
+
+Open a terminal.\sidenote{%
+    \textbf{macOS:} the Terminal application is in
+    \texttt{Applications\,/\,Utilities}.\\[4pt]
+    \textbf{Windows:} use PowerShell (search the Start menu).
+    Windows Subsystem for Linux (WSL2) is an excellent alternative that
+    provides a full Linux environment inside Windows---see
+    \url{https://learn.microsoft.com/en-us/windows/wsl/} for setup
+    instructions.\\[4pt]
+    \textbf{Linux:} any terminal emulator will work.}
+Run the appropriate command for your operating system:
+
+\medskip
+\noindent\textbf{macOS and Linux:}
+\begin{lstlisting}[style=bashstyle]
+curl -LsSf https://astral.sh/uv/install.sh | sh
+\end{lstlisting}
+
+\medskip
+\noindent\textbf{Windows (PowerShell):}
+\begin{lstlisting}[style=bashstyle]
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+\end{lstlisting}
+
+\medskip
+After installation, close and reopen your terminal, then verify that
+\texttt{uv} is available:
+
+\begin{lstlisting}[style=bashstyle]
+uv --version
+\end{lstlisting}
+
+You should see output like \texttt{uv 0.4.x}.
+If you see a \texttt{command not found} error, consult the installation
+guide at \url{https://docs.astral.sh/uv/getting-started/installation/}.
+
+% ------------------------------------------------------------
+\section{Creating Your First Project}
+% ------------------------------------------------------------
+
+\texttt{uv} organises work around \emph{projects}.
+A project is a folder that contains your code alongside a configuration file
+(\texttt{pyproject.toml}) that records which packages your project needs and
+in which versions.
+
+Navigate to wherever you store your work and create a new project:
+
+\begin{lstlisting}[style=bashstyle]
+cd ~/Documents        # or wherever you prefer to keep projects
+uv init saxs-tutorial
+cd saxs-tutorial
+\end{lstlisting}
+
+\texttt{uv} will create the following structure:
+
+\begin{lstlisting}[style=bashstyle]
+saxs-tutorial/
+    pyproject.toml    # project configuration and dependencies
+    README.md         # project description (edit this freely)
+    hello.py          # a minimal starter script
+\end{lstlisting}
+
+\begin{notebox}[title={What is \texttt{pyproject.toml}?}]
+\texttt{pyproject.toml} is the central configuration file for your project.
+It records the project name, the Python version required, and the list of
+packages your project depends on.
+You will rarely need to edit it by hand---\texttt{uv} keeps it up to date
+automatically as you add packages.
+It is the file that allows anyone else (or a future you) to recreate your
+environment exactly.
+\end{notebox}
+
+% ------------------------------------------------------------
+\section{Installing Scientific Packages}
+% ------------------------------------------------------------
+
+Install the packages we will need throughout this guide:
+
+\begin{lstlisting}[style=bashstyle]
+uv add numpy scipy matplotlib jupyterlab
+\end{lstlisting}
+
+\texttt{uv} creates a virtual environment in a hidden \texttt{.venv} folder
+inside your project, installs the requested packages into it, and updates
+\texttt{pyproject.toml} automatically.
+The first time you run this it may take a minute or two to download
+everything.
+
+Verify the installation by asking \texttt{uv} to run a quick Python check:
+
+\begin{lstlisting}[style=bashstyle]
+uv run python -c "import numpy, scipy, matplotlib; print('All packages OK')"
+\end{lstlisting}
+
+If you see \texttt{All packages OK}, your environment is ready.
+
+\begin{exercisebox}
+Open \texttt{pyproject.toml} in VS Code (we will install VS Code in
+Chapter~\ref{ch:vscode}) and find the section that lists your installed
+packages.
+What version of NumPy was installed?
+How would you find out what the latest available version is?
+\end{exercisebox}
+
+% ============================================================
+\chapter{Version Control with Git and GitHub}
+\label{ch:git}
+% ============================================================
+
+\section{Why Scientists Should Use Version Control}
+
+Imagine writing a simulation, obtaining results you are happy with, then
+making changes to improve the code---only to discover that the new version
+no longer reproduces the original results, and you cannot remember exactly
+what you changed.
+This is an extremely common and genuinely frustrating experience.
+
+Version control is the solution.
+Git is a tool that records every change you make to your project files,
+along with a short description of what changed and why.
+At any point you can look back through the complete history of your work,
+compare any two versions side by side, or restore an earlier state exactly.
+
+GitHub is a website that stores a copy of your Git history in the cloud,
+making it accessible from any computer and easy to share with collaborators
+or a supervisor.\sidenote{%
+    GitHub (\url{https://github.com}) is the most widely used hosting
+    service in the scientific community, but alternatives exist---GitLab
+    (\url{https://gitlab.com}) and Bitbucket (\url{https://bitbucket.org})
+    offer similar functionality.}
+
+\begin{conceptbox}[title={The Core Git Workflow}]
+The everyday Git workflow involves three steps that you will repeat throughout
+this guide and beyond:
+\begin{enumerate}
+    \item \textbf{Stage} the changes you want to save:\quad
+          \texttt{git add}
+    \item \textbf{Commit} with a short message describing what changed:\quad
+          \texttt{git commit}
+    \item \textbf{Push} your commit to GitHub:\quad
+          \texttt{git push}
+\end{enumerate}
+Think of a commit as a labelled snapshot of your project at a specific moment.
+A good commit message is short but informative.
+\texttt{add sphere form factor function} is far more useful than
+\texttt{update} or \texttt{changes} when you are looking back through
+history six months later.
+\end{conceptbox}
+
+% ------------------------------------------------------------
+\section{Installing Git}
+% ------------------------------------------------------------
+
+\noindent\textbf{macOS:}
+Git is often pre-installed.
+Check by running \texttt{git --version} in a terminal.
+If it is absent, install the Xcode Command Line Tools:
+
+\begin{lstlisting}[style=bashstyle]
+xcode-select --install
+\end{lstlisting}
+
+Alternatively, download Git directly from \url{https://git-scm.com/downloads}.
+
+\medskip
+\noindent\textbf{Windows:}
+Download the installer from \url{https://git-scm.com/downloads/win} and
+accept the default options.
+Git Bash, which is included with this installer, provides a convenient
+terminal for the commands in this guide if you are not using WSL2.
+
+\medskip
+\noindent\textbf{Linux:}
+\begin{lstlisting}[style=bashstyle]
+# Debian or Ubuntu
+sudo apt install git
+
+# Fedora
+sudo dnf install git
+\end{lstlisting}
+
+Confirm the installation:
+\begin{lstlisting}[style=bashstyle]
+git --version
+\end{lstlisting}
+
+% ------------------------------------------------------------
+\section{Configuring Git}
+% ------------------------------------------------------------
+
+Before using Git for the first time, tell it your name and email address.
+These are attached to every commit and will be visible in your project
+history:
+
+\begin{lstlisting}[style=bashstyle]
+git config --global user.name  "Your Name"
+git config --global user.email "your.email@example.com"
+\end{lstlisting}
+
+Use the same email address you will register with GitHub.
+
+% ------------------------------------------------------------
+\section{Creating a GitHub Account}
+% ------------------------------------------------------------
+
+Go to \url{https://github.com} and create a free account if you do not
+already have one.
+Choose a professional username---it will be visible to collaborators and
+can appear on a CV or portfolio.
+
+% ------------------------------------------------------------
+\section{Setting Up SSH Authentication}
+% ------------------------------------------------------------
+
+GitHub needs a way to verify that it is really you when you push code to
+your account.
+The recommended method is SSH key authentication, which is more secure than
+a password and, once configured, requires no further action from you.
+
+\medskip
+\noindent\textbf{Step 1: Generate an SSH key pair.}
+
+\begin{lstlisting}[style=bashstyle]
+ssh-keygen -t ed25519 -C "your.email@example.com"
+\end{lstlisting}
+
+When prompted for a file location, press Enter to accept the default
+(\texttt{\textasciitilde/.ssh/id\_ed25519}).
+When prompted for a passphrase, you may press Enter twice to leave it empty,
+or set a passphrase for additional security.\sidenote{%
+    On macOS, a passphrase can be stored in the system Keychain so you are
+    not prompted repeatedly.}
+
+\begin{conceptbox}[title={Public Keys and Private Keys}]
+SSH authentication works by generating two mathematically linked files: a
+\emph{private key} stored only on your computer (never shared) and a
+\emph{public key} shared with GitHub.
+When you connect to GitHub, your computer proves it holds the private key
+without ever revealing it---similar to a lock-and-key system where the lock
+is public but the key is yours alone.
+
+The private key is stored at \texttt{\textasciitilde/.ssh/id\_ed25519}.
+\textbf{Never share or upload your private key file under any circumstances.}
+\end{conceptbox}
+
+\medskip
+\noindent\textbf{Step 2: Copy your public key.}
+
+\begin{lstlisting}[style=bashstyle]
+# macOS
+cat ~/.ssh/id_ed25519.pub | pbcopy
+
+# Linux (copy the printed output manually)
+cat ~/.ssh/id_ed25519.pub
+
+# Windows PowerShell
+Get-Content ~/.ssh/id_ed25519.pub | Set-Clipboard
+\end{lstlisting}
+
+\medskip
+\noindent\textbf{Step 3: Add the public key to GitHub.}
+
+\begin{enumerate}
+    \item Log in to \url{https://github.com}
+    \item Click your profile picture (top right) and choose \textbf{Settings}
+    \item In the left sidebar, click \textbf{SSH and GPG keys}
+    \item Click \textbf{New SSH key}
+    \item Give it a descriptive title (e.g.\ \textit{MacBook 2025}) and
+          paste your public key into the Key field
+    \item Click \textbf{Add SSH key}
+\end{enumerate}
+
+\medskip
+\noindent\textbf{Step 4: Test the connection.}
+
+\begin{lstlisting}[style=bashstyle]
+ssh -T git@github.com
+\end{lstlisting}
+
+A successful connection produces a message like:\\[4pt]
+\texttt{Hi username! You've successfully authenticated, but GitHub does not
+provide shell access.}
+
+\medskip
+Full documentation for this process is available at
+\url{https://docs.github.com/en/authentication/connecting-to-github-with-ssh}.
+
+% ------------------------------------------------------------
+\section{Creating Your Repository and Connecting It Locally}
+% ------------------------------------------------------------
+
+\noindent\textbf{Step 1: Create a new repository on GitHub.}
+
+\begin{enumerate}
+    \item Click the \textbf{+} icon (top right) and choose
+          \textbf{New repository}
+    \item Name it \texttt{saxs-tutorial}
+    \item Add a short description if you like
+    \item Choose \textbf{Public} or \textbf{Private} according to your
+          preference
+    \item Check \textbf{Add a README file}
+    \item Click \textbf{Create repository}
+\end{enumerate}
+
+\medskip
+\noindent\textbf{Step 2: Link your local project folder to GitHub.}
+
+Inside your \texttt{saxs-tutorial} folder, run:\sidenote{%
+    Replace \texttt{yourusername} with your actual GitHub username.}
+
+\begin{lstlisting}[style=bashstyle]
+git init
+git remote add origin git@github.com:yourusername/saxs-tutorial.git
+git branch -M main
+\end{lstlisting}
+
+You are now ready to push code from your computer to GitHub.
+
+% ============================================================
+\chapter{VS Code and Jupyter Notebooks}
+\label{ch:vscode}
+% ============================================================
+
+\section{Installing VS Code}
+
+Visual Studio Code (VS Code) is a free, cross-platform code editor developed
+by Microsoft.
+It has first-class support for Python and Jupyter notebooks and is widely
+used in both academic research and industry.
+Download it from \url{https://code.visualstudio.com} and follow the
+installer for your operating system.
+
+% ------------------------------------------------------------
+\section{Installing Extensions}
+% ------------------------------------------------------------
+
+VS Code's capabilities are extended through \emph{extensions}.
+Click the Extensions icon in the left sidebar (or press
+\texttt{Ctrl+Shift+X} on Windows/Linux, \texttt{Cmd+Shift+X} on macOS)
+and install:
+
+\begin{itemize}
+    \item \textbf{Python} (by Microsoft) --- language support, linting, and
+          environment management
+    \item \textbf{Jupyter} (by Microsoft) --- run Jupyter notebooks directly
+          inside VS Code
+\end{itemize}
+
+After installing the Python extension, open the Command Palette
+(\texttt{Ctrl+Shift+P} / \texttt{Cmd+Shift+P}) and search for
+\texttt{Python: Select Interpreter}.
+Choose the interpreter inside your \texttt{.venv} folder---it will appear
+as something like \texttt{.venv (saxs-tutorial)}.
+This tells VS Code to use the packages you installed with \texttt{uv}.
+
+% ------------------------------------------------------------
+\section{Opening Your Project}
+% ------------------------------------------------------------
+
+Go to \textbf{File $\rightarrow$ Open Folder} and select your
+\texttt{saxs-tutorial} folder.
+The file explorer on the left shows the project contents.
+
+% ------------------------------------------------------------
+\section{Anatomy of a Jupyter Notebook}
+% ------------------------------------------------------------
+
+A Jupyter notebook is a document made up of \emph{cells}, of which there
+are two types you will use regularly:
+
+\begin{itemize}
+    \item \textbf{Markdown cells} --- formatted text, equations written in
+          \LaTeX{} notation, and narrative explanation
+    \item \textbf{Code cells} --- Python code that can be run interactively,
+          one cell at a time, with output appearing directly below
+\end{itemize}
+
+This combination makes notebooks particularly well-suited to scientific work:
+you can describe what you are about to compute, run the code, and have
+the result---including figures---appear in the same document.
+A well-written notebook is a complete record of a calculation that a
+collaborator (or your future self) can follow and reproduce.
+
+% ------------------------------------------------------------
+\section{Hello, Scientific Python}
+% ------------------------------------------------------------
+
+Create a new file called \texttt{chapter\_01\_hello.ipynb}.
+In the VS Code file explorer, click the new-file icon, type the filename
+with the \texttt{.ipynb} extension, and VS Code will open it automatically
+as a notebook.
+
+Click \textbf{+ Markdown} to add your first markdown cell and type:
+
+\begin{lstlisting}[style=bashstyle]
+# Chapter 1: Hello, Scientific Python
+
+This notebook confirms that the environment is working correctly.
+\end{lstlisting}
+
+Add a code cell and type the traditional first program:
+
+\begin{lstlisting}
+print("Hello, world!")
+\end{lstlisting}
+
+Press \texttt{Shift+Enter} to run the cell.
+The text \texttt{Hello, world!} should appear immediately below it.
+
+\medskip
+Now test the scientific packages by adding a second code cell:
+
+\begin{lstlisting}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 200 evenly spaced values from 0 to 2*pi
+x = np.linspace(0, 2 * np.pi, 200)
+y = np.sin(x)
+
+fig, ax = plt.subplots()
+ax.plot(x, y, color="steelblue", label=r"$\sin(x)$")
+ax.set_xlabel(r"$x$ (radians)")
+ax.set_ylabel(r"$\sin(x)$")
+ax.legend(loc="upper right")
+plt.show()
+\end{lstlisting}
+
+Run this cell.
+A sine wave should appear inline below the cell.
+If it does, your environment is fully working and you are ready to move on.
+
+\begin{notebox}[title={Inline Figures in VS Code}]
+When running a plain \texttt{.py} script, matplotlib typically opens a
+figure in a separate window.
+Inside a Jupyter notebook in VS Code, figures appear inline, directly below
+the code cell that produced them.
+This is one of the reasons notebooks are convenient for exploratory
+scientific work---the code, the narrative, and the results all live
+together in one place.
+\end{notebox}
+
+% ============================================================
+\chapter{Your First Commit}
+\label{ch:firstcommit}
+% ============================================================
+
+You have set up your environment, installed your packages, and written your
+first notebook.
+Before moving to the science, take a few minutes to save this work
+permanently using Git.
+This habit---committing at every meaningful checkpoint---is one of the most
+valuable practices you can build as a computational scientist.
+
+% ------------------------------------------------------------
+\section{Staging, Committing, and Pushing}
+% ------------------------------------------------------------
+
+Open a terminal inside VS Code by pressing the backtick key while holding
+\texttt{Ctrl} (or going to \textbf{Terminal $\rightarrow$ New Terminal}).
+You should be in your \texttt{saxs-tutorial} directory automatically.
+
+\medskip
+\noindent\textbf{Step 1: Check what Git can see.}
+
+\begin{lstlisting}[style=bashstyle]
+git status
+\end{lstlisting}
+
+Git will list any new or modified files that have not yet been committed.
+Your notebook and \texttt{pyproject.toml} should appear here.
+
+\medskip
+\noindent\textbf{Step 2: Stage the files you want to include.}
+
+\begin{lstlisting}[style=bashstyle]
+git add chapter_01_hello.ipynb pyproject.toml README.md
+\end{lstlisting}
+
+\medskip
+\noindent\textbf{Step 3: Commit with a clear message.}
+
+\begin{lstlisting}[style=bashstyle]
+git commit -m "add hello world notebook and project configuration"
+\end{lstlisting}
+
+\medskip
+\noindent\textbf{Step 4: Push to GitHub.}
+
+\begin{lstlisting}[style=bashstyle]
+git push -u origin main
+\end{lstlisting}
+
+The \texttt{-u origin main} flags only need to be included on the first push.
+After that, \texttt{git push} alone is sufficient.
+
+Navigate to your repository on GitHub and refresh the page---your files
+should now be visible there.
+
+% ------------------------------------------------------------
+\section{Ignoring Files That Should Not Be Tracked}
+% ------------------------------------------------------------
+
+Some files in your project should never be committed to Git.
+The \texttt{.venv} folder, for instance, can be several hundred megabytes
+and can always be recreated from \texttt{pyproject.toml} using
+\texttt{uv sync}.
+Compiled Python files (\texttt{.pyc}) are also unnecessary to track.
+
+Create a file called \texttt{.gitignore} in your project root:
+
+\begin{lstlisting}[style=bashstyle]
+.venv/
+__pycache__/
+*.pyc
+.DS_Store       # macOS folder metadata
+\end{lstlisting}
+
+Add this file to Git and commit it:
+
+\begin{lstlisting}[style=bashstyle]
+git add .gitignore
+git commit -m "add gitignore for Python project"
+git push
+\end{lstlisting}
+
+\begin{notebox}[title={GitHub's Python Template}]
+When creating a new repository on GitHub, there is an option to add a
+\texttt{.gitignore} automatically using a language-specific template.
+Choosing the \textbf{Python} template provides a comprehensive list of
+files to ignore and is a convenient starting point for new projects.
+\end{notebox}
+
+% ------------------------------------------------------------
+\section{A Note on Commit Frequency}
+% ------------------------------------------------------------
+
+There is no single correct answer to how often you should commit.
+A useful rule of thumb: commit whenever you reach a state you would be
+unhappy to lose.
+In practice this might mean committing after writing a new function, after
+a plot looks the way you want it, or at the end of each working session.
+
+Smaller, more frequent commits with descriptive messages are almost always
+preferable to large, infrequent commits labelled \texttt{stuff} or
+\texttt{final}.
+
+\begin{exercisebox}
+\begin{enumerate}
+    \item Add a new markdown cell to your notebook that describes in your
+          own words what the sine wave plot is showing.
+    \item Run the notebook to confirm everything still works.
+    \item Stage and commit the updated notebook with an appropriate message.
+    \item Push the commit to GitHub and confirm it appears on the website.
+\end{enumerate}
+\end{exercisebox}
+
+% ============================================================
+%  APPENDICES
+% ============================================================
+\appendix
+
+% ------------------------------------------------------------
+\chapter{Remote Computing via SSH}
+\label{app:remote}
+% ------------------------------------------------------------
+
+\emph{This appendix is provided for reference and can safely be skipped
+for now.
+You will not need remote computing until later in the tutorial series.
+Return here when your supervisor or instructor indicates that it is time.}
+
+\section{What is a Remote Computer and Why Use One?}
+
+Some calculations in later chapters will be computationally expensive.
+Rather than waiting for your laptop to finish a long job, you can connect
+to a more powerful remote machine---such as a departmental server or a
+high-performance computing cluster---and run the code there.
+
+The standard tool for this is \textbf{SSH} (Secure Shell), which lets you
+open a terminal session on a remote machine over a network connection.
+
+% ------------------------------------------------------------
+\section{Connecting to a Remote Machine}
+% ------------------------------------------------------------
+
+\begin{lstlisting}[style=bashstyle]
+ssh username@hostname.university.edu
+\end{lstlisting}
+
+Replace \texttt{username} with your account name on the remote system and
+\texttt{hostname.university.edu} with the address your institution provides.
+
+If you have already set up an SSH key pair (Chapter~\ref{ch:git}), you can
+copy your public key to the remote machine to avoid entering a password
+each time:
+
+\begin{lstlisting}[style=bashstyle]
+ssh-copy-id username@hostname.university.edu
+\end{lstlisting}
+
+% ------------------------------------------------------------
+\section{Transferring Files}
+% ------------------------------------------------------------
+
+To copy a file \emph{to} the remote machine:
+
+\begin{lstlisting}[style=bashstyle]
+scp localfile.ipynb username@hostname.university.edu:~/destination/
+\end{lstlisting}
+
+To copy a file \emph{from} the remote machine to your local computer:
+
+\begin{lstlisting}[style=bashstyle]
+scp username@hostname.university.edu:~/remotefile.ipynb ./
+\end{lstlisting}
+
+For whole folders, add the \texttt{-r} (recursive) flag:
+
+\begin{lstlisting}[style=bashstyle]
+scp -r saxs-tutorial/ username@hostname.university.edu:~/
+\end{lstlisting}
+
+% ------------------------------------------------------------
+\section{Running Jupyter Notebooks on a Remote Machine}
+% ------------------------------------------------------------
+
+You can run a Jupyter server on the remote machine and view it in your
+local browser by forwarding the network port over SSH.
+
+\medskip
+\noindent\textbf{Step 1:} Connect with port forwarding enabled:
+
+\begin{lstlisting}[style=bashstyle]
+ssh -L 8888:localhost:8888 username@hostname.university.edu
+\end{lstlisting}
+
+\noindent\textbf{Step 2:} On the remote machine, start JupyterLab:
+
+\begin{lstlisting}[style=bashstyle]
+uv run jupyter lab --no-browser --port=8888
+\end{lstlisting}
+
+\noindent\textbf{Step 3:} Copy the URL that JupyterLab prints (it will
+look like \texttt{http://localhost:8888/lab?token=...}) and paste it
+into your local browser.
+
+You now have a full JupyterLab interface running on the remote machine,
+displayed in your local browser.
+
+% ------------------------------------------------------------
+\section{Keeping Sessions Alive with \texttt{tmux}}
+% ------------------------------------------------------------
+
+If your SSH connection drops while a calculation is running, that
+calculation will be killed.
+\texttt{tmux} is a terminal multiplexer that keeps your session alive on the
+remote machine even if the connection is interrupted.
+
+\begin{lstlisting}[style=bashstyle]
+# Start a new named session
+tmux new -s tutorial
+
+# Detach from the session (it keeps running in the background)
+# Press Ctrl+B, then D
+
+# Reattach after reconnecting via SSH
+tmux attach -t tutorial
+\end{lstlisting}
+
+A concise \texttt{tmux} reference is available at
+\url{https://tmuxcheatsheet.com}.
+
+% ------------------------------------------------------------
+\chapter{Exercise Solutions}
+\label{app:solutions}
+% ------------------------------------------------------------
+
+\emph{Solutions will be added here progressively as the tutorial guide
+grows.
+Attempt each exercise on your own before consulting this appendix.}
+
+\section*{Chapter~1}
+
+\subsection*{Exercise 1.1}
+Open \texttt{pyproject.toml} in VS Code.
+The \texttt{[project]} section contains a \texttt{dependencies} key that
+lists each installed package with its version constraint.
+To see what the latest available version of NumPy is, run:
+
+\begin{lstlisting}[style=bashstyle]
+uv add numpy          # uv will report if a newer version is available
+pip index versions numpy   # lists all available versions
+\end{lstlisting}
+
+The \texttt{uv} documentation at \url{https://docs.astral.sh/uv/} describes
+how to upgrade packages to newer versions.
+
+\section*{Chapter~4}
+
+\subsection*{Exercise 4.1}
+After adding your markdown cell and running the notebook, the staging and
+commit sequence is:
+
+\begin{lstlisting}[style=bashstyle]
+git add chapter_01_hello.ipynb
+git commit -m "add description of sine wave plot to notebook"
+git push
+\end{lstlisting}
+
+The commit message should be specific to what changed.
+If you also modified other files, include them in the \texttt{git add}
+command before committing.
+
+% ============================================================
+\end{document}

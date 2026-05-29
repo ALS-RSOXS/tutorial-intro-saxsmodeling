@@ -59,9 +59,9 @@ After this section your notebook contains:
 | `plot_form_factor(q, P, ...)` | Plots a form factor on log-log axes with standard formatting |
 | `polydisperse_sphere(q, R_mean, sigma_R)` | Averages $P(q, R)$ over a Gaussian size distribution |
 
-These functions will be reused and extended throughout Section 3.
+These functions will be reused and extended throughout Section 4.
 
 ---
 
-**What's next:** [Section 3 →](../section3-shells/index.md) — adding shells to the
+**What's next:** [Section 4 →](../section4-shells/index.md) — adding shells to the
 sphere model, building toward a hollow sphere and the physics of lipid vesicles.
