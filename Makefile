@@ -2,7 +2,7 @@
 
 # Install all dependencies
 install:
-	uv sync
+	uv sync --all-groups
 
 # Build the static documentation site into site/
 docs:
