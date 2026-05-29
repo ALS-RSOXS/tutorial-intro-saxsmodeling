@@ -1,38 +1,10 @@
 /* ---------------------------------------------------------------
-   Scrollable code blocks
-   The wrapper (.highlight / .codehilite) is the scroll container.
-   The pre inside expands to fit its content but cannot escape the
-   page column — horizontal scrolling happens on the wrapper.
---------------------------------------------------------------- */
-.codehilite,
-.highlight {
-    position: relative;
-    display: block;
-    max-width: 100%;
-    max-height: 600px;
-    overflow: auto;        /* both axes scroll on the wrapper */
-    box-sizing: border-box;
-}
-
-.codehilite pre,
-.highlight pre {
-    display: block;
-    white-space: pre;      /* preserve formatting without wrapping */
-    overflow: visible;     /* wrapper handles scrolling */
-    width: max-content;    /* expand to fit widest line */
-    min-width: 100%;       /* fill container if code is narrow */
-    margin: 0;
-    box-sizing: border-box;
-}
-
-/* ---------------------------------------------------------------
    Copy button
-   Injected by docs/javascripts/copy.js. Sticky in top-right so it
-   stays visible when the code block is scrolled horizontally.
+   Injected by docs/javascripts/copy.js. Appears on hover in the
+   top-right corner of every code block.
 --------------------------------------------------------------- */
 .copy-button {
-    position: sticky;
-    float: right;
+    position: absolute;
     top: 6px;
     right: 6px;
     padding: 3px 10px;
