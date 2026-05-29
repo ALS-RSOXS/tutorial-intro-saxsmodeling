@@ -1,0 +1,12 @@
+/* ---------------------------------------------------------------
+   Scrollable code blocks
+   Override the theme's overflow-hidden on .highlight containers
+   so that long code snippets scroll rather than being clipped.
+   max-height ~600px shows roughly 35 lines before triggering scroll.
+--------------------------------------------------------------- */
+article .codehilite > pre,
+article .highlight > pre {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: auto;
+}

@@ -55,6 +55,9 @@ markdown_extensions:
   - toc:
       permalink: true
 
+extra_css:
+  - stylesheets/extra.css
+
 extra_javascript:
   - javascripts/katex.js
   - https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js
