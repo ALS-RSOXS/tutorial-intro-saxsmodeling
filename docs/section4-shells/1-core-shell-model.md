@@ -54,7 +54,7 @@ zero-$q$ limit (obtained by substituting $F(q,R) = 1$).
 
 ## Implementation
 
-Create `chapter_03_shells.ipynb` and paste in the helper functions from Section 2.
+Create `chapter_04_shells.ipynb` and paste in the helper functions from Section 2.
 Then add the following new cells.
 
 First, extract the unsquared amplitude from the Section 2 function:
@@ -195,7 +195,7 @@ into the problem — features from both $R_c$ and $R_s$ are present in the curve
 
 !!! tip "Git checkpoint"
     ```console
-    $ git add chapter_03_shells.ipynb
+    $ git add chapter_04_shells.ipynb
     $ git commit -m "add sphere_amplitude and core_shell_form_factor functions"
     ```
 

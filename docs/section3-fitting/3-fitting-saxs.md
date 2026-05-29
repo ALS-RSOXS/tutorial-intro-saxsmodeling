@@ -254,3 +254,7 @@ well below 0.9 for clean data with visible oscillations.
     $ git add chapter_03_fitting.ipynb
     $ git commit -m "fit polydisperse sphere to fake SAXS data with log-scale weighting"
     ```
+
+---
+
+**What's next:** [Section 4 →](../section4-shells/index.md) — extending the sphere model with concentric shells and connecting the hollow sphere geometry to the physics of lipid vesicles.

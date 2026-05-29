@@ -213,7 +213,7 @@ materials for this tutorial.
 Save everything you have built:
 
 ```console
-$ git add chapter_03_shells.ipynb
+$ git add chapter_04_shells.ipynb
 $ git commit -m "add multi-shell and hollow sphere form factor models"
 $ git push
 ```
@@ -221,3 +221,7 @@ $ git push
 You now have a complete, version-controlled scattering toolkit: a sphere form factor,
 polydisperse averaging, a general multi-shell model, and its application to the hollow
 sphere geometry that describes vesicle scattering.
+
+---
+
+**What's next:** [Section 5 →](../section5-gaussian/index.md) — replacing the sharp-interface shell model with continuous Gaussian electron density profiles that more accurately describe a real lipid bilayer.

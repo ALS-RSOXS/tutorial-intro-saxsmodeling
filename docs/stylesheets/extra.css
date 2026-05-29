@@ -1,12 +1,59 @@
 /* ---------------------------------------------------------------
    Scrollable code blocks
-   Override the theme's overflow-hidden on .highlight containers
-   so that long code snippets scroll rather than being clipped.
-   max-height ~600px shows roughly 35 lines before triggering scroll.
+   The theme sets overflow: hidden on .highlight / .codehilite
+   wrappers, which clips scroll. Override that here and apply
+   max-height + scroll to the pre element inside.
 --------------------------------------------------------------- */
-article .codehilite > pre,
-article .highlight > pre {
+.codehilite,
+.highlight {
+    position: relative;
+    overflow: visible !important;
+}
+
+.codehilite pre,
+.highlight pre {
     max-height: 600px;
     overflow-y: auto;
     overflow-x: auto;
+    white-space: pre;
+}
+
+/* ---------------------------------------------------------------
+   Copy button
+   Injected by docs/javascripts/copy.js. Appears on hover in the
+   top-right corner of every code block.
+--------------------------------------------------------------- */
+.copy-button {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    line-height: 1.5;
+    border: 1px solid rgba(128, 128, 128, 0.4);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #555;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 20;
+    font-family: inherit;
+    user-select: none;
+}
+
+.codehilite:hover .copy-button,
+.highlight:hover .copy-button {
+    opacity: 1;
+}
+
+.copy-button:hover {
+    background: #fff;
+    border-color: rgba(128, 128, 128, 0.7);
+    color: #222;
+}
+
+.copy-button.copied {
+    color: #1a7f3c;
+    border-color: #1a7f3c;
 }

@@ -19,7 +19,7 @@ By the end of this section you will have:
   vesicle
 - A complete, reusable scattering toolkit built across Sections 2 and 4
 
-All code belongs in a new notebook: `chapter_03_shells.ipynb`. Copy your
+All code belongs in a new notebook: `chapter_04_shells.ipynb`. Copy your
 `sphere_amplitude`, `sphere_form_factor`, and `plot_form_factor` functions from
 `chapter_02_sphere.ipynb` into the first code cell of the new notebook so that
 everything is self-contained.

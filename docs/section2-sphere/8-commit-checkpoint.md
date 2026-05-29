@@ -63,5 +63,4 @@ These functions will be reused and extended throughout Section 4.
 
 ---
 
-**What's next:** [Section 4 →](../section4-shells/index.md) — adding shells to the
-sphere model, building toward a hollow sphere and the physics of lipid vesicles.
+**What's next:** [Section 3 →](../section3-fitting/index.md) — fitting scattering models to data using least-squares optimization and extracting parameter uncertainties.

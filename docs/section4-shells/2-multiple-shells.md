@@ -141,7 +141,7 @@ makes the oscillation pattern less regular than for a simple solid sphere.
 
 !!! tip "Git checkpoint"
     ```console
-    $ git add chapter_03_shells.ipynb
+    $ git add chapter_04_shells.ipynb
     $ git commit -m "add multi_shell_form_factor for N-shell models"
     ```
 

@@ -150,7 +150,7 @@ the full radius (a solid sphere), the curve converges toward the solid sphere li
 
 !!! tip "Git checkpoint"
     ```console
-    $ git add chapter_03_shells.ipynb
+    $ git add chapter_04_shells.ipynb
     $ git commit -m "explore hollow sphere geometry and vesicle approximation"
     ```
 
