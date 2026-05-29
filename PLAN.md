@@ -103,11 +103,12 @@ docs/
 │   ├── 3-hollow-sphere.md         ✅
 │   └── 4-vesicle-connection.md    ✅
 ├── section4-gaussian/
-│   ├── index.md                   ⬜
-│   ├── 1-why-gaussian.md          ⬜
-│   ├── 2-building-the-profile.md  ⬜
+│   ├── index.md                       ⬜
+│   ├── 1-why-gaussian.md              ⬜
+│   ├── 2-building-the-profile.md      ⬜
 │   ├── 3-form-factor-from-profile.md  ⬜
-│   └── 4-comparing-to-shell-model.md  ⬜
+│   ├── 4-comparing-to-shell-model.md  ⬜
+│   └── 5-asymmetric-bilayer.md        ⬜
 └── appendix/
     ├── remote-ssh.md              ✅
     └── exercise-solutions.md      ✅  (stub — solutions are in-page)
@@ -244,17 +245,38 @@ q = np.logspace(-3, 0, 500)  # (1)
 | Section 1 | `chapter_01_hello.ipynb` |
 | Section 2 | `chapter_02_sphere.ipynb` |
 | Section 3 | `chapter_03_shells.ipynb` |
+| Section 4 | `chapter_04_gaussian_bilayer.ipynb` |
 
 ---
 
 ### Section 4: Gaussian Bilayer Profiles ⬜ Not yet written
 
 **Goal:** Introduce the Gaussian electron density profile as a physically motivated
-alternative to the sharp-interface shell model. By the end of this section the student
-can construct a continuous radial electron density profile for a lipid bilayer,
-numerically compute its form factor, and critically compare it to the three-shell
-model from Section 3. The student notebook for this section is
-`chapter_04_gaussian_bilayer.ipynb`.
+alternative to the sharp-interface shell model. Build a symmetric POPC bilayer model,
+compute its form factor numerically, compare it to the three-shell model, and then
+extend it to an asymmetric bilayer to capture real membrane physics. The student
+notebook for this section is `chapter_04_gaussian_bilayer.ipynb`.
+
+**Reference lipid system throughout:** POPC (1-palmitoyl-2-oleoyl-sn-glycero-3-
+phosphocholine) at 25°C.
+
+**POPC starting parameters:**
+
+| Parameter | Symbol | Value | Notes |
+|---|---|---|---|
+| Head-to-head distance | $d_{HH}$ | 37.1 Å | Kučerka et al. 2011 |
+| Headgroup width (symmetric) | $\sigma_H$ | 3.0 Å | Outer and inner equal |
+| Chain region width | $\sigma_C$ | 5.5 Å | |
+| Headgroup amplitude | $A_H$ | positive | Headgroups denser than water |
+| Chain amplitude | $A_C$ | negative | Chains less dense than water |
+| Vesicle outer radius | $R$ | 300 Å | Representative LUV |
+
+**POPC asymmetric parameters (page 5):**
+
+| Parameter | Outer leaflet | Inner leaflet | Notes |
+|---|---|---|---|
+| Headgroup width $\sigma_H$ | 3.0 Å | 4.5 Å | Inner is rougher (Brzustowicz & Brunger 2005) |
+| Headgroup amplitude $A_H$ | reference | slightly lower | Inner slightly less ordered |
 
 #### Motivation: why Gaussian profiles?
 
@@ -286,10 +308,11 @@ coordinate rather than a rectangular slab. This approach:
 
 | Page | Status | Key content |
 |---|---|---|
-| `1-why-gaussian.md` | ⬜ | Sharp vs smooth interfaces, physical motivation, literature context, preview of what the Gaussian model can and cannot do |
-| `2-building-the-profile.md` | ⬜ | The 1D symmetric bilayer electron density profile as a sum of three Gaussians (two headgroup peaks + one methyl trough), parameter definitions, Python implementation of `bilayer_profile(r, ...)`, visualization |
-| `3-form-factor-from-profile.md` | ⬜ | Numerical spherical Fourier transform, `vesicle_form_factor_gaussian(q, R, ...)` function, plot the resulting curve |
-| `4-comparing-to-shell-model.md` | ⬜ | Side-by-side comparison with three-shell model from Section 3, exercise: tune Gaussian widths to converge toward the sharp-interface limit, discuss where the models agree and where they diverge, when each is appropriate |
+| `1-why-gaussian.md` | ✅ | Sharp vs smooth interfaces, physical motivation, literature context, preview of what the Gaussian model can and cannot do |
+| `2-building-the-profile.md` | ✅ | Symmetric POPC bilayer as three Gaussians, parameter definitions, `bilayer_electron_density`, profile visualization overlaid on three-shell step function |
+| `3-form-factor-from-profile.md` | ✅ | Spherical Fourier transform integral, `vesicle_form_factor_gaussian`, radial grid discussion |
+| `4-comparing-to-shell-model.md` | ✅ | Side-by-side Gaussian vs three-shell, convergence at narrow widths, divergence at high $q$, conceptual exercise on required $q$ range |
+| `5-asymmetric-bilayer.md` | ✅ | Physical motivation for leaflet asymmetry (curvature, composition, Brzustowicz finding), `asymmetric_bilayer_electron_density` with separate outer/inner headgroup parameters, comparison to symmetric model, POPC asymmetry exercise |
 
 #### Content detail
 
@@ -297,14 +320,15 @@ coordinate rather than a rectangular slab. This approach:
 
 - Open with a physical picture: a bilayer is not a stack of uniform slabs, it is a
   continuously varying electron density profile
-- Show a schematic of the headgroup-chain-headgroup structure with smooth transitions
-- Explain the three regimes where the step model breaks down:
+- Schematic of the headgroup-chain-headgroup structure with smooth transitions
+- Three regimes where the step model breaks down:
   (a) high-$q$ oscillation amplitude over-predicted by sharp interfaces,
   (b) fitting real data where interface roughness is a free parameter,
   (c) comparing to MD simulations which output continuous profiles
 - Brief mention of published Gaussian bilayer models and why they are standard in the
-  field (Brzustowicz & Brunger 2005, Pabst et al.)
-- Note that the Gaussian model still uses the same amplitude-before-squaring rule
+  field (Brzustowicz & Brunger 2005, Pabst et al., Kučerka et al.)
+- Note that the Gaussian model still uses the same amplitude-before-squaring rule from
+  Section 3
 
 **Page 2 — Building the electron density profile**
 
@@ -313,73 +337,84 @@ The symmetric bilayer model uses three Gaussian components:
 $$\rho(r) = \rho_w + A_H \left[\exp\!\left(-\frac{(r - r_H^{\text{out}})^2}{2\sigma_H^2}\right) + \exp\!\left(-\frac{(r - r_H^{\text{in}})^2}{2\sigma_H^2}\right)\right] - A_C\,\exp\!\left(-\frac{(r - r_C)^2}{2\sigma_C^2}\right)$$
 
 where:
-- $\rho_w$ is the water (background) SLD
-- $A_H$, $\sigma_H$ — headgroup Gaussian amplitude and width
-- $r_H^{\text{out}} = R$, $r_H^{\text{in}} = R - d_{HH}$ — outer and inner headgroup positions
-  (where $R$ is the outer vesicle radius and $d_{HH}$ is the headgroup-to-headgroup
-  distance across the bilayer)
-- $A_C$, $\sigma_C$ — methyl chain amplitude (negative relative to $\rho_w$) and width
-- $r_C = R - d_{HH}/2$ — midplane of the bilayer
+- $\rho_w$ — water SLD ($9.47 \times 10^{-6}$ Å$^{-2}$)
+- $A_H$, $\sigma_H$ — headgroup amplitude and width (same for both leaflets)
+- $r_H^{\text{out}} = R$ — outer headgroup position
+- $r_H^{\text{in}} = R - d_{HH}$ — inner headgroup position
+- $A_C$, $\sigma_C$ — chain amplitude (negative) and width
+- $r_C = R - d_{HH}/2$ — bilayer midplane
 
-Typical starting parameters for a DPPC bilayer:
-$d_{HH} \approx 37$ Å, $\sigma_H \approx 3$ Å, $\sigma_C \approx 5$ Å
+Use POPC starting parameters: $d_{HH} = 37.1$ Å, $\sigma_H = 3.0$ Å, $\sigma_C = 5.5$ Å.
 
 Python: implement `bilayer_electron_density(r, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water)`.
-Plot $\rho(r)$ vs $r$ and label each feature. Overlay the step-function profile from
-the three-shell model for comparison.
+Plot $\rho(r)$ vs $r$, label each Gaussian component, and overlay the step-function
+profile from the three-shell model.
 
 **Page 3 — From profile to form factor**
 
-The form factor amplitude for a spherically symmetric particle with electron density
-profile $\rho(r)$ is:
-
 $$F(q) = \frac{4\pi}{q} \int_0^\infty \left[\rho(r) - \rho_w\right] r \sin(qr)\, \mathrm{d}r$$
 
-This integral does not have a closed form for a sum of Gaussians on a sphere, so we
-evaluate it numerically using `np.trapz`:
-
-```python
-def vesicle_form_factor_gaussian(q, R, d_HH, sigma_H, A_H, sigma_C, A_C,
-                                  rho_water, n_points=2000):
-    r = np.linspace(0.1, R + 4 * sigma_H, n_points)
-    rho = bilayer_electron_density(r, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water)
-    delta_rho = rho - rho_water
-
-    F = np.array([
-        np.trapz(delta_rho * r * np.sin(qi * r), r) * 4 * np.pi / qi
-        for qi in q
-    ])
-
-    return (F / F[0])**2   # normalized P(q)
-```
-
-Discuss the resolution of the radial grid: too coarse misses the narrow Gaussians;
-too fine is slow. `n_points=2000` is a reasonable default for typical bilayer
-dimensions. Code annotation on the `for` loop explains what each step computes.
+Numerical evaluation with `np.trapz`. Sketch of the `vesicle_form_factor_gaussian`
+function (same signature pattern as symmetric model). Discuss radial grid resolution:
+`n_points=2000` is a reasonable default. Code annotations on the loop.
 
 **Page 4 — Comparing to the shell model**
 
 Main exercise: generate both the Gaussian form factor and the three-shell form factor
-for the same nominal bilayer geometry, overlay them on log-log axes, and observe where
-they agree and diverge.
+for the same nominal POPC bilayer geometry, overlay on log-log axes.
 
-Expected result: at small to intermediate $q$ (below the first minimum of the main
-peak) the two models agree closely. At larger $q$, the sharp-interface shell model
-predicts deeper oscillations than the Gaussian model because the Gaussian dampens
-high-frequency contributions exponentially (the $\exp(-q^2\sigma^2/2)$ envelope).
+Expected result: models agree at small/intermediate $q$; diverge at high $q$ where
+the Gaussian's $\exp(-q^2\sigma^2/2)$ envelope damps the oscillations below what
+the sharp-interface model predicts.
 
 Exercises:
-1. Start with narrow Gaussians ($\sigma_H = 1$ Å, $\sigma_C = 1$ Å) — the profile
-   approaches a step function. Confirm that the Gaussian and shell model curves
-   converge.
-2. Broaden the Gaussians progressively. At what width does the high-$q$ behavior
-   diverge meaningfully?
-3. The headgroup amplitude $A_H$ is positive (higher electron density than water) and
-   the chain amplitude $A_C$ is negative (lower electron density). What happens to
-   the profile and form factor if you increase $A_H$ while holding $A_C$ fixed?
-4. **Conceptual:** If you were fitting experimental data from a real vesicle suspension
-   and could only see up to $q = 0.3$ Å$^{-1}$, would the three-shell model be
-   sufficient? What about $q = 0.6$ Å$^{-1}$?
+1. Start with $\sigma_H = 1$ Å, $\sigma_C = 1$ Å — confirm convergence to shell model
+2. Broaden progressively — at what width does high-$q$ diverge meaningfully?
+3. Vary $A_H$ with $A_C$ fixed — what changes in the profile and form factor?
+4. **Conceptual:** At $q_{\max} = 0.3$ Å$^{-1}$ vs $q_{\max} = 0.6$ Å$^{-1}$, which
+   model is sufficient? What does this imply for experimental design?
+
+**Page 5 — Asymmetric bilayer**
+
+*Physical motivation:*
+
+Real lipid bilayers are not symmetric about the midplane. Two sources of asymmetry are
+relevant here:
+
+1. **Geometric asymmetry from curvature** — in a vesicle the outer leaflet has
+   greater area per lipid than the inner leaflet. This forces the outer leaflet to
+   stretch slightly and the inner leaflet to compress, leading to different packing
+   densities and slightly different headgroup environments.
+
+2. **Structural disorder asymmetry** — Brzustowicz & Brunger (2005) found
+   experimentally that the inner headgroup layer is measurably rougher (larger
+   $\sigma_H^{\text{in}}$) than the outer layer, consistent with the inner leaflet
+   being more conformationally disordered due to curvature strain.
+
+For POPC specifically:
+- Outer headgroup: $\sigma_H^{\text{out}} \approx 3.0$ Å
+- Inner headgroup: $\sigma_H^{\text{in}} \approx 4.5$ Å
+
+*The asymmetric model:*
+
+Replace the single shared $\sigma_H$ and $A_H$ with separate parameters for each leaflet:
+
+$$\rho(r) = \rho_w + A_H^{\text{out}} \exp\!\left(-\frac{(r - R)^2}{2(\sigma_H^{\text{out}})^2}\right) + A_H^{\text{in}} \exp\!\left(-\frac{(r - (R - d_{HH}))^2}{2(\sigma_H^{\text{in}})^2}\right) - A_C\,\exp\!\left(-\frac{(r - r_C)^2}{2\sigma_C^2}\right)$$
+
+Python: implement `asymmetric_bilayer_electron_density(r, R, d_HH, sigma_H_out, A_H_out, sigma_H_in, A_H_in, sigma_C, A_C, rho_water)`.
+
+*Content flow:*
+1. Side-by-side profile plot: symmetric POPC vs asymmetric POPC — show the broadened
+   inner headgroup peak
+2. Side-by-side scattering curve: how does the asymmetry affect $P(q)$?
+3. Discuss: at what $q$ does the asymmetry become detectable? (Requires high-$q$ data)
+4. Exercise: starting from symmetric parameters, increase $\sigma_H^{\text{in}}$
+   progressively from 3.0 to 6.0 Å and track how the scattering curve changes
+5. Conceptual exercise: if you can only measure to $q = 0.4$ Å$^{-1}$, can you
+   distinguish a symmetric from an asymmetric bilayer? What does this tell you about
+   the data quality needed for structural refinement?
+
+*Git checkpoint:* `"add asymmetric Gaussian bilayer model for POPC"`
 
 #### Functions to build in Section 4
 
@@ -387,6 +422,8 @@ Exercises:
 |---|---|
 | `bilayer_electron_density` | `(r, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water)` |
 | `vesicle_form_factor_gaussian` | `(q, R, d_HH, sigma_H, A_H, sigma_C, A_C, rho_water, n_points=2000)` |
+| `asymmetric_bilayer_electron_density` | `(r, R, d_HH, sigma_H_out, A_H_out, sigma_H_in, A_H_in, sigma_C, A_C, rho_water)` |
+| `asymmetric_vesicle_form_factor` | `(q, R, d_HH, sigma_H_out, A_H_out, sigma_H_in, A_H_in, sigma_C, A_C, rho_water, n_points=2000)` |
 
 #### mkdocs.yml nav additions (when written)
 
@@ -397,6 +434,7 @@ Exercises:
   - Building the Profile: section4-gaussian/2-building-the-profile.md
   - Form Factor from a Profile: section4-gaussian/3-form-factor-from-profile.md
   - Comparing to the Shell Model: section4-gaussian/4-comparing-to-shell-model.md
+  - Asymmetric Bilayer: section4-gaussian/5-asymmetric-bilayer.md
 ```
 
 ---

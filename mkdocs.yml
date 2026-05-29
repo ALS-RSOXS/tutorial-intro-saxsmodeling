@@ -87,6 +87,13 @@ nav:
     - Multiple Shells: section3-shells/2-multiple-shells.md
     - The Hollow Sphere: section3-shells/3-hollow-sphere.md
     - Connection to Vesicles: section3-shells/4-vesicle-connection.md
+  - "Section 4: Gaussian Bilayer Profiles":
+    - Overview: section4-gaussian/index.md
+    - Why Gaussian Profiles?: section4-gaussian/1-why-gaussian.md
+    - Building the Profile: section4-gaussian/2-building-the-profile.md
+    - Form Factor from a Profile: section4-gaussian/3-form-factor-from-profile.md
+    - Comparing to the Shell Model: section4-gaussian/4-comparing-to-shell-model.md
+    - Asymmetric Bilayer: section4-gaussian/5-asymmetric-bilayer.md
   - Appendix:
     - Remote Computing via SSH: appendix/remote-ssh.md
     - Exercise Solutions: appendix/exercise-solutions.md
