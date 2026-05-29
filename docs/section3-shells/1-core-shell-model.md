@@ -193,6 +193,12 @@ into the problem — features from both $R_c$ and $R_s$ are present in the curve
     The destructive interference between the two amplitude terms is partial rather
     than complete.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_03_shells.ipynb
+    $ git commit -m "add sphere_amplitude and core_shell_form_factor functions"
+    ```
+
 ---
 
 **What's next:** [Multiple Shells](2-multiple-shells.md) — generalizing the model to

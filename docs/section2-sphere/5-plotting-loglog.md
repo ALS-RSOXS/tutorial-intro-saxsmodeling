@@ -142,6 +142,12 @@ plt.show()
     $q^{-4}$ behavior (known as **Porod's law**) is a universal signature of sharp
     interfaces and does not depend on particle shape.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_02_sphere.ipynb
+    $ git commit -m "add plot_form_factor log-log plotting helper"
+    ```
+
 ---
 
 **What's next:** [Effect of Sphere Size](6-effect-of-size.md) — varying the radius

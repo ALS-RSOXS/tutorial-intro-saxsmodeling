@@ -15,8 +15,8 @@ on a remote machine over a network connection.
 
 ## Connecting to a remote machine
 
-```bash
-ssh username@hostname.university.edu
+```console
+$ ssh username@hostname.university.edu
 ```
 
 Replace `username` with your account name on the remote system and
@@ -26,8 +26,8 @@ If you already set up an SSH key pair (see [SSH Keys](../section1-setup/5-ssh-ke
 you can copy your public key to the remote machine to avoid entering a password each
 time:
 
-```bash
-ssh-copy-id username@hostname.university.edu
+```console
+$ ssh-copy-id username@hostname.university.edu
 ```
 
 ## VS Code Remote-SSH
@@ -44,20 +44,20 @@ VS Code for local development.
 
 To copy a file **to** the remote machine:
 
-```bash
-scp localfile.ipynb username@hostname.university.edu:~/destination/
+```console
+$ scp localfile.ipynb username@hostname.university.edu:~/destination/
 ```
 
 To copy a file **from** the remote machine to your local computer:
 
-```bash
-scp username@hostname.university.edu:~/remotefile.ipynb ./
+```console
+$ scp username@hostname.university.edu:~/remotefile.ipynb ./
 ```
 
 For whole folders, add the `-r` (recursive) flag:
 
-```bash
-scp -r saxs-tutorial/ username@hostname.university.edu:~/
+```console
+$ scp -r saxs-tutorial/ username@hostname.university.edu:~/
 ```
 
 ## Running Jupyter on a remote machine
@@ -68,14 +68,14 @@ over SSH.
 
 **Step 1:** Connect with port forwarding enabled:
 
-```bash
-ssh -L 8888:localhost:8888 username@hostname.university.edu
+```console
+$ ssh -L 8888:localhost:8888 username@hostname.university.edu
 ```
 
 **Step 2:** On the remote machine, start JupyterLab:
 
-```bash
-uv run jupyter lab --no-browser --port=8888
+```console
+$ uv run jupyter lab --no-browser --port=8888
 ```
 
 **Step 3:** Copy the URL that JupyterLab prints — it will look like
@@ -90,15 +90,15 @@ If your SSH connection drops while a calculation is running, that calculation is
 killed. **tmux** is a terminal multiplexer that keeps your session alive on the remote
 machine even if the connection is interrupted.
 
-```bash
+```console
 # Start a new named session
-tmux new -s tutorial
+$ tmux new -s tutorial
 
 # Detach (session keeps running in the background)
 # Press Ctrl+B, then D
 
 # Reattach after reconnecting via SSH
-tmux attach -t tutorial
+$ tmux attach -t tutorial
 ```
 
 A concise tmux reference is available at [tmuxcheatsheet.com](https://tmuxcheatsheet.com).

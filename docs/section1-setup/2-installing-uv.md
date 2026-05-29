@@ -40,20 +40,20 @@ Open a terminal and run the command for your operating system.
     **Linux:** Any terminal emulator works.
 
 === "macOS / Linux"
-    ```bash
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```console
+    $ curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
 === "Windows (PowerShell)"
-    ```powershell
-    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+    ```console
+    $ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
     ```
 
 After installation, **close and reopen your terminal**, then verify that uv is
 available:
 
-```bash
-uv --version
+```console
+$ uv --version
 ```
 
 You should see output like `uv 0.4.x` or later. If you see a `command not found`

@@ -212,10 +212,10 @@ materials for this tutorial.
 
 Save everything you have built:
 
-```bash
-git add chapter_03_shells.ipynb
-git commit -m "add multi-shell and hollow sphere form factor models"
-git push
+```console
+$ git add chapter_03_shells.ipynb
+$ git commit -m "add multi-shell and hollow sphere form factor models"
+$ git push
 ```
 
 You now have a complete, version-controlled scattering toolkit: a sphere form factor,

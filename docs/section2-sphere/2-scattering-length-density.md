@@ -243,6 +243,12 @@ print(f"rho_imag:       {rho_imag:.3e} Å^-2")
     the edge. This energy-dependent contrast is the defining advantage of RSOXS for
     studying chemical heterogeneity in soft-matter systems.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_02_sphere.ipynb
+    $ git commit -m "add SLD conversion utility functions"
+    ```
+
 ---
 
 **What's next:** [The Sphere Form Factor](3-sphere-form-factor.md) — the mathematical

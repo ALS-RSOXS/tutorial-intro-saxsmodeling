@@ -126,6 +126,12 @@ large $q$ is many orders of magnitude smaller. If so, the function is working co
     Repeating with $R = 100$ Å shifts the minimum to half the $q$ value, confirming
     that larger spheres produce features at smaller $q$.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_02_sphere.ipynb
+    $ git commit -m "add q-vector array and sphere_form_factor function"
+    ```
+
 ---
 
 **What's next:** [Plotting on a Log Scale](5-plotting-loglog.md) — visualizing $P(q)$

@@ -35,8 +35,8 @@ widely used code-hosting platform in the scientific community.
     Git is often pre-installed. Check by running `git --version` in a terminal.
     If it is absent, install the Xcode Command Line Tools:
 
-    ```bash
-    xcode-select --install
+    ```console
+    $ xcode-select --install
     ```
 
     Alternatively, download Git from
@@ -49,19 +49,19 @@ widely used code-hosting platform in the scientific community.
     for the commands in this tutorial if you are not using WSL2.
 
 === "Linux (Debian / Ubuntu)"
-    ```bash
-    sudo apt install git
+    ```console
+    $ sudo apt install git
     ```
 
 === "Linux (Fedora)"
-    ```bash
-    sudo dnf install git
+    ```console
+    $ sudo dnf install git
     ```
 
 Confirm the installation:
 
-```bash
-git --version
+```console
+$ git --version
 ```
 
 ## Configuring Git
@@ -69,9 +69,9 @@ git --version
 Before using Git for the first time, tell it your name and email address. These are
 attached to every commit and appear in your project history:
 
-```bash
-git config --global user.name  "Your Name"
-git config --global user.email "your.email@example.com"
+```console
+$ git config --global user.name  "Your Name"
+$ git config --global user.email "your.email@example.com"
 ```
 
 Use the same email address you will register with GitHub.

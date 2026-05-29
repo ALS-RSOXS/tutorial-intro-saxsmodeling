@@ -20,10 +20,10 @@ them directly — `uv` keeps track of everything for you.
 
 Navigate to wherever you store your work and create a new project:
 
-```bash
-cd ~/Documents        # or wherever you prefer to keep projects
-uv init saxs-tutorial
-cd saxs-tutorial
+```console
+$ cd ~/Documents        # or wherever you prefer to keep projects
+$ uv init saxs-tutorial
+$ cd saxs-tutorial
 ```
 
 `uv` creates the following structure:
@@ -46,8 +46,8 @@ saxs-tutorial/
 
 Install the libraries you will need throughout this tutorial:
 
-```bash
-uv add numpy scipy matplotlib jupyterlab
+```console
+$ uv add numpy scipy matplotlib jupyterlab
 ```
 
 `uv` creates a virtual environment in a hidden `.venv` folder inside your project,
@@ -56,8 +56,8 @@ The first run may take a minute or two while packages download.
 
 Verify the installation:
 
-```bash
-uv run python -c "import numpy, scipy, matplotlib; print('All packages OK')"
+```console
+$ uv run python -c "import numpy, scipy, matplotlib; print('All packages OK')"
 ```
 
 If you see `All packages OK`, your environment is ready.
@@ -86,12 +86,18 @@ If you see `All packages OK`, your environment is ready.
     The version numbers on your machine may differ. To check whether a newer version
     of a package is available:
 
-    ```bash
-    uv add numpy           # uv reports if a newer version exists
+    ```console
+    $ uv add numpy           # uv reports if a newer version exists
     ```
 
     The [uv documentation](https://docs.astral.sh/uv/) explains how to upgrade
     packages to specific versions.
+
+!!! tip "Git checkpoint"
+    ```console
+    $ git add pyproject.toml
+    $ git commit -m "initialise saxs-tutorial project and install scientific packages"
+    ```
 
 ---
 

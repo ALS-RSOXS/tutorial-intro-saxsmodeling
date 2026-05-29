@@ -139,6 +139,12 @@ makes the oscillation pattern less regular than for a simple solid sphere.
     practice, experimental data rarely resolves more than two or three distinct
     oscillation periods, which limits how many shells can be meaningfully fit to data.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_03_shells.ipynb
+    $ git commit -m "add multi_shell_form_factor for N-shell models"
+    ```
+
 ---
 
 **What's next:** [The Hollow Sphere](3-hollow-sphere.md) — a guided discovery of what

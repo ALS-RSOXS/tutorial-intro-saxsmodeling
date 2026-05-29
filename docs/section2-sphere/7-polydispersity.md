@@ -257,6 +257,12 @@ Look at the oscillations as polydispersity increases. What happens?
     20–30% the Schulz-Zimm curve shows slightly more washing of the oscillations,
     particularly at higher $q$, due to its heavier large-$R$ tail.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_02_sphere.ipynb
+    $ git commit -m "add polydisperse_sphere with Schulz-Zimm distribution"
+    ```
+
 ---
 
 **What's next:** [Commit Checkpoint](8-commit-checkpoint.md) — saving everything you

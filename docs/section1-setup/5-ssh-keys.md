@@ -20,13 +20,13 @@ password and, once configured, requires no further action from you.
 ## Step 1: Generate an SSH key pair
 
 === "macOS / Linux"
-    ```bash
-    ssh-keygen -t ed25519 -C "your.email@example.com"
+    ```console
+    $ ssh-keygen -t ed25519 -C "your.email@example.com"
     ```
 
 === "Windows (PowerShell)"
-    ```powershell
-    ssh-keygen -t ed25519 -C "your.email@example.com"
+    ```console
+    $ ssh-keygen -t ed25519 -C "your.email@example.com"
     ```
 
 When prompted for a file location, press **Enter** to accept the default
@@ -36,20 +36,20 @@ to leave it empty, or set a passphrase for additional security.
 ## Step 2: Copy your public key
 
 === "macOS"
-    ```bash
-    cat ~/.ssh/id_ed25519.pub | pbcopy
+    ```console
+    $ cat ~/.ssh/id_ed25519.pub | pbcopy
     ```
     The public key is now in your clipboard.
 
 === "Linux"
-    ```bash
-    cat ~/.ssh/id_ed25519.pub
+    ```console
+    $ cat ~/.ssh/id_ed25519.pub
     ```
     Copy the entire line of output (it starts with `ssh-ed25519`).
 
 === "Windows (PowerShell)"
-    ```powershell
-    Get-Content ~/.ssh/id_ed25519.pub | Set-Clipboard
+    ```console
+    $ Get-Content ~/.ssh/id_ed25519.pub | Set-Clipboard
     ```
     The public key is now in your clipboard.
 
@@ -65,8 +65,8 @@ to leave it empty, or set a passphrase for additional security.
 
 ## Step 4: Test the connection
 
-```bash
-ssh -T git@github.com
+```console
+$ ssh -T git@github.com
 ```
 
 A successful connection produces:

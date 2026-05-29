@@ -26,10 +26,10 @@ Now link your local `saxs-tutorial` folder to the repository on GitHub. Open a
 terminal inside VS Code by pressing `` Ctrl+` `` (or going to
 **Terminal → New Terminal**), then run:
 
-```bash
-git init
-git remote add origin git@github.com:yourusername/saxs-tutorial.git
-git branch -M main
+```console
+$ git init
+$ git remote add origin git@github.com:yourusername/saxs-tutorial.git
+$ git branch -M main
 ```
 
 Replace `yourusername` with your actual GitHub username. You can find the exact
@@ -40,8 +40,8 @@ command on your new repository's page on GitHub — look for the section titled
 
 **Step 1: Check what Git can see.**
 
-```bash
-git status
+```console
+$ git status
 ```
 
 Git lists new or modified files that have not yet been committed. Your notebook and
@@ -49,8 +49,8 @@ Git lists new or modified files that have not yet been committed. Your notebook 
 
 **Step 2: Stage the files you want to include.**
 
-```bash
-git add chapter_01_hello.ipynb pyproject.toml README.md
+```console
+$ git add chapter_01_hello.ipynb pyproject.toml README.md
 ```
 
 Staging is a deliberate step — it lets you choose exactly which changes go into this
@@ -58,14 +58,14 @@ commit. You do not have to include every modified file every time.
 
 **Step 3: Commit with a clear message.**
 
-```bash
-git commit -m "add hello world notebook and project configuration"
+```console
+$ git commit -m "add hello world notebook and project configuration"
 ```
 
 **Step 4: Push to GitHub.**
 
-```bash
-git push -u origin main
+```console
+$ git push -u origin main
 ```
 
 The `-u origin main` flags only need to be included on the first push. After that,
@@ -93,10 +93,10 @@ __pycache__/
 
 Then add and commit it:
 
-```bash
-git add .gitignore
-git commit -m "add gitignore for Python project"
-git push
+```console
+$ git add .gitignore
+$ git commit -m "add gitignore for Python project"
+$ git push
 ```
 
 ## How often should you commit?
@@ -117,10 +117,10 @@ large, infrequent commits labeled `stuff` or `final2`.
     4. Push the commit to GitHub and confirm it appears on the repository page.
 
 ??? success "Solution"
-    ```bash
-    git add chapter_01_hello.ipynb
-    git commit -m "add description of sine wave plot to notebook"
-    git push
+    ```console
+    $ git add chapter_01_hello.ipynb
+    $ git commit -m "add description of sine wave plot to notebook"
+    $ git push
     ```
 
     The commit message should reflect what specifically changed. If you also modified

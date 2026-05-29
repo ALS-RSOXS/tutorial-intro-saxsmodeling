@@ -8,17 +8,17 @@ checkpoint — save your work before moving on.
 
 Check what has changed since your last commit:
 
-```bash
-git status
+```console
+$ git status
 ```
 
 You should see `chapter_02_sphere.ipynb` listed as a new or modified file. Stage and
 commit it:
 
-```bash
-git add chapter_02_sphere.ipynb
-git commit -m "add sphere form factor and polydispersity model"
-git push
+```console
+$ git add chapter_02_sphere.ipynb
+$ git commit -m "add sphere form factor and polydispersity model"
+$ git push
 ```
 
 !!! tip "Suggested commit messages for this section"
@@ -43,10 +43,10 @@ in your `.gitignore` earlier, add it now:
 
 Then commit the updated `.gitignore`:
 
-```bash
-git add .gitignore
-git commit -m "add jupyter checkpoint folder to gitignore"
-git push
+```console
+$ git add .gitignore
+$ git commit -m "add jupyter checkpoint folder to gitignore"
+$ git push
 ```
 
 ## What you have built

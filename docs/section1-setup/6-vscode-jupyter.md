@@ -143,6 +143,12 @@ If the sine wave appears, your environment is fully working and you are ready to
     period). This offset is visible in the plot: the cosine reaches its maximum at
     $x = 0$, while the sine is zero there.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_01_hello.ipynb
+    $ git commit -m "add hello world notebook"
+    ```
+
 ---
 
 **What's next:** [Your First Commit](7-first-commit.md) — saving this work permanently

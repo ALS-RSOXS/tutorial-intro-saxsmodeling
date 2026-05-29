@@ -115,6 +115,12 @@ I_noisy = np.clip(I_noisy, 1e-10, None)  # keep values positive for log scale
     real data, noise and polydispersity (addressed on the next page) can broaden or
     wash out the minimum, making the estimate less precise.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_02_sphere.ipynb
+    $ git commit -m "explore effect of sphere radius on scattering curve"
+    ```
+
 ---
 
 **What's next:** [Polydispersity](7-polydispersity.md) — accounting for the fact that

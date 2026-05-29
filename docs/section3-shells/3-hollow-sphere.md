@@ -148,6 +148,12 @@ the full radius (a solid sphere), the curve converges toward the solid sphere li
     outermost boundary — a solid sphere of radius `R_outer` with $\Delta\rho =
     \rho_{\text{shell}} - \rho_m$.
 
+!!! tip "Git checkpoint"
+    ```console
+    $ git add chapter_03_shells.ipynb
+    $ git commit -m "explore hollow sphere geometry and vesicle approximation"
+    ```
+
 ---
 
 **What's next:** [Connection to Vesicles](4-vesicle-connection.md) — connecting the
