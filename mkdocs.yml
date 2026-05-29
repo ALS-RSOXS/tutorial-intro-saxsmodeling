@@ -2,8 +2,8 @@ site_name: Simulating X-ray Scattering
 site_description: >-
   A practical introduction to SAXS modeling using Python and GitHub,
   designed for undergraduate students and early-career researchers.
-site_url: https://PLACEHOLDER.github.io/tutorial-intro-saxsmodeling
-repo_url: https://github.com/PLACEHOLDER/tutorial-intro-saxsmodeling
+site_url: https://als-rsoxs.github.io/tutorial-intro-saxsmodeling/
+repo_url: https://github.com/ALS-RSOXS/tutorial-intro-saxsmodeling
 repo_name: tutorial-intro-saxsmodeling
 edit_uri: edit/main/docs/
 
@@ -13,7 +13,7 @@ site_dir: site
 theme:
   name: rsoxs
   show_title: true
-  show_stargazers: false  # set to true once repo_url is finalized
+  show_stargazers: true  # set to true once repo_url is finalized
   topbar_sections: false
   features:
     - content.code.copy
@@ -29,8 +29,8 @@ theme:
 extra:
   als_group:
     full_name: ALS RSOXS Group
-    acronym: RSOXS
-    github_url: https://github.com/PLACEHOLDER  # update before deploy
+    acronym: REIXS
+    github_url: https://github.com/als-rsoxs
     reixs_url: https://als.lbl.gov/science/photon-science-programs/rixs-program/
 
 plugins:
