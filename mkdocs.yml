@@ -60,7 +60,6 @@ extra_css:
 
 extra_javascript:
   - javascripts/katex.js
-  - javascripts/copy.js
   - https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js
   - https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js
 
