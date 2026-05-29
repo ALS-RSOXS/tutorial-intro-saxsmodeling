@@ -15,6 +15,8 @@ theme:
   show_title: true
   show_stargazers: true  # set to true once repo_url is finalized
   topbar_sections: false
+  katex_options:
+    throwOnError: false
   features:
     - content.code.copy
     - content.code.annotate
@@ -40,20 +42,16 @@ plugins:
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.superfences
   - pymdownx.highlight:
       anchor_linenums: true
-      use_pygments: true
+      css_class: codehilite
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.tabbed:
       alternate_style: true
-  - pymdownx.arithmatex:
-      generic: true
   - toc:
       permalink: true
 

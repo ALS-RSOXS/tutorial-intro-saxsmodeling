@@ -1,0 +1,20 @@
+[project]
+name = "tutorial-intro-saxsmodeling"
+version = "0.1.0"
+description = "SAXS modeling tutorial site"
+readme= "README.md"
+license = "MIT"
+requires-python = ">=3.13"
+dependencies = [
+    "mkdocs>=1.6.0",
+    "mkdocs-rsoxs>=0.1.2",
+    "mkdocstrings-python>=2.0.1",
+    "pymdown-extensions>=10.21.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/ALS-RSOXS/tutorial-intro-saxsmodeling"
+Documentation = "https://als-rsoxs.github.io/tutorial-intro-saxsmodeling"
+Repository = "https://github.com/ALS-RSOXS/tutorial-intro-saxsmodeling"
+Issues = "https://github.com/ALS-RSOXS/tutorial-intro-saxsmodeling/issues"
+Changelog = "https://github.com/ALS-RSOXS/tutorial-intro-saxsmodeling/blob/main/CHANGELOG.md"
