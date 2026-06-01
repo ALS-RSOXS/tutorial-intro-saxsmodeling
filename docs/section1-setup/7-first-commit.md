@@ -1,5 +1,3 @@
-# Your First Commit
-
 You have set up your environment, installed your packages, and written your first
 notebook. Before moving to any science, save this work permanently with Git. This
 habit — committing at every meaningful checkpoint — is one of the most valuable
@@ -9,18 +7,17 @@ practices you can build as a computational scientist.
 
 First, create a new repository on GitHub:
 
+1. Navigate to github.com and login to your account
 1. Click the **+** icon (top right) → **New repository**
 2. Name it `saxs-tutorial`
 3. Add a short description if you like
 4. Choose **Public** or **Private**
 5. Check **Add a README file**
+6. Check **Add a .gitignore** and select **Python**
 6. Click **Create repository**
 
 !!! tip "Use the Python .gitignore template"
-    On the repository creation page there is an option to initialize a `.gitignore`
-    file using a language template. Choose **Python** — it automatically excludes
-    compiled files, virtual environment folders, and other files that should never be
-    committed. This saves you from writing one by hand.
+    The .gitignore file will automatically exclude specific files from any future commit. These are files that may be sensitive or routine files not necessary to save such as compiled files and virtual environment folders. You can always add more to .gitignore as needed.
 
 Now link your local `saxs-tutorial` folder to the repository on GitHub. Open a
 terminal inside VS Code by pressing `` Ctrl+` `` (or going to

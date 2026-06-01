@@ -1,5 +1,3 @@
-# SSH Keys
-
 GitHub needs a way to verify that it is really you when you push code to your account.
 The recommended method is **SSH key authentication**, which is more secure than a
 password and, once configured, requires no further action from you.
@@ -30,7 +28,7 @@ password and, once configured, requires no further action from you.
     ```
 
 When prompted for a file location, press **Enter** to accept the default
-(`~/.ssh/id_ed25519`). When prompted for a passphrase, you may press **Enter** twice
+(`~/.ssh/id_ed25519`). You may change the name of the key if you would like to better indicate that it is for Github. When prompted for a passphrase, you may press **Enter** twice
 to leave it empty, or set a passphrase for additional security.
 
 ## Step 2: Copy your public key

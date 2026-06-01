@@ -1,5 +1,3 @@
-# VS Code and Jupyter
-
 ## Installing VS Code
 
 **Visual Studio Code** (VS Code) is a free, cross-platform code editor developed by
@@ -143,11 +141,6 @@ If the sine wave appears, your environment is fully working and you are ready to
     period). This offset is visible in the plot: the cosine reaches its maximum at
     $x = 0$, while the sine is zero there.
 
-!!! tip "Git checkpoint"
-    ```console
-    $ git add chapter_01_hello.ipynb
-    $ git commit -m "add hello world notebook"
-    ```
 
 ---
 

@@ -1,7 +1,9 @@
 # Section 1: Setting Up Your Scientific Computing Environment
 
-Before you can write any scattering physics, you need a working computing environment.
-This section builds that foundation from scratch.
+In order to simulate any scattering physics, a
+computing environment is first needed. What is provided here is a recommendation based on preferences of the ALS RSOXS group. Feel free to explore other tools as you become more familiar with what options are available.
+
+This section assumes you have no Python experience.
 
 By the end of this section you will have:
 
@@ -11,13 +13,11 @@ By the end of this section you will have:
 - Your first notebook committed and pushed to GitHub
 
 These are not scattering-specific tools. They are the standard infrastructure for
-reproducible scientific computing, and you will use all of them throughout your
-research career.
+reproducible scientific computing and data analysis. These tools should be helpful throughout a career in research.
 
 !!! note "A note on time"
-    Setting up a computing environment the right way takes about an hour the first
-    time. It is worth doing carefully — a solid foundation will save you many hours
-    of debugging later.
+    Setting up a Github account and becoming familiar with building a virtual computing environment takes a little more than an hour the first
+    time. It might feel redundent in the beginning, but it will greatly improve your ability to build software in a team environment.
 
 ## Pages in this section
 
@@ -32,4 +32,4 @@ research career.
 !!! tip "Remote computing"
     A later section of this tutorial involves running code on a remote Linux machine.
     Instructions for that are in the [Appendix](../appendix/remote-ssh.md). You do
-    not need it yet — come back when your instructor says it is time.
+    not need to worry about this yet. Once your computing needs expand beyond a laptop, this will be helpful tool to accelerate your productivity.

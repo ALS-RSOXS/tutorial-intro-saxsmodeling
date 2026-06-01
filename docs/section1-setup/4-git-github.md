@@ -1,11 +1,9 @@
-# Git and GitHub
-
 ## Why scientists should use version control
 
 Imagine writing a simulation, getting results you are happy with, then making changes
 to improve the code — only to discover that the new version no longer reproduces your
 original results, and you cannot remember exactly what you changed. This is an
-extremely common and genuinely frustrating experience.
+extremely common and genuinely frustrating experience when writing new software.
 
 **Version control** is the solution. **Git** is a tool that records every change you
 make to your project files, along with a short description of what changed and why.
@@ -44,18 +42,13 @@ widely used code-hosting platform in the scientific community.
 
 === "Windows"
     Download the installer from
-    [git-scm.com/downloads/win](https://git-scm.com/downloads/win) and accept the
+    [https://git-scm.com/install/windows](https://git-scm.com/install/windows) and accept the
     default options. The installer includes **Git Bash**, a terminal that works well
-    for the commands in this tutorial if you are not using WSL2.
+    for the commands in this tutorial.
 
-=== "Linux (Debian / Ubuntu)"
+=== "Linux (Ubuntu)"
     ```console
     $ sudo apt install git
-    ```
-
-=== "Linux (Fedora)"
-    ```console
-    $ sudo dnf install git
     ```
 
 Confirm the installation:
@@ -79,8 +72,7 @@ Use the same email address you will register with GitHub.
 ## Creating a GitHub account
 
 Go to [github.com](https://github.com) and create a free account if you do not already
-have one. Choose a professional username — it will be visible to collaborators and can
-appear in a CV or portfolio.
+have one.
 
 ---
 

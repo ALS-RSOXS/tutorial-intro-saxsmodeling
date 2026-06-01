@@ -1,10 +1,8 @@
-# Installing uv
-
 When you install Python, you get the language itself — but not the scientific libraries
 you need. Those must be installed separately, and managing them can become complicated
 quickly. Different projects may need different versions of the same library, and
 installing everything into a single shared environment is a reliable way to create
-hard-to-diagnose conflicts.
+hard-to-diagnose conflicts. This is especially true with many scientific codebases as they are often poorly maintained by temporary researchers such as PhD candidates or Postdoctoral scholars.
 
 **uv** is a modern Python package and project manager that solves this cleanly. It
 handles three things automatically:
@@ -20,34 +18,23 @@ handles three things automatically:
     heavyweight and can conflict with existing Python installations.
 
     `uv` is written in Rust and designed to be a single, fast tool that handles
-    everything in one place. It is the recommended tool for new projects. Full
+    everything in one place. It is the recommended tool for the ALS RSOXS group when beginning new projects.Full
     documentation is at [docs.astral.sh/uv](https://docs.astral.sh/uv/).
 
 ## Installation
 
-Open a terminal and run the command for your operating system.
+Instructions on installing **uv** can be found from the online documentation at [docs.astral.sh/uv](https://docs.astral.sh/uv/).
+
 
 !!! tip "Opening a terminal"
+    You will be asked to 'open a terminal' to complete the **uv** instalation. We will use the terminal throughout this tutorial as it is often the most useful method to install and manage Python packages. It may feel obtuse at first, but it is very powerful.
+
     **macOS:** Open the Terminal app from Applications → Utilities, or press
     `Cmd+Space` and type "Terminal".
 
-    **Windows:** Search for "PowerShell" in the Start menu. Windows Subsystem for
-    Linux (WSL2) is an excellent alternative that gives you a full Linux environment
-    inside Windows — see
-    [Microsoft's WSL documentation](https://learn.microsoft.com/en-us/windows/wsl/)
-    for setup instructions.
+    **Windows:** Search for "PowerShell" in the Start menu. 
 
     **Linux:** Any terminal emulator works.
-
-=== "macOS / Linux"
-    ```console
-    $ curl -LsSf https://astral.sh/uv/install.sh | sh
-    ```
-
-=== "Windows (PowerShell)"
-    ```console
-    $ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-    ```
 
 After installation, **close and reopen your terminal**, then verify that uv is
 available:
